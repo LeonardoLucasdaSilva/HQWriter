@@ -4,17 +4,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Quicksand:wght@300&display=swap"
           rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
 
     <style>
         h3 {
             font-family: Quicksand;
             font-size: 220%;
             margin-bottom: -0.5%;
+            margin-top: 2%;
         }
 
         button {
             font-family: Quicksand;
             font-size: 220%;
+        }
+        th{
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         a {
@@ -25,19 +35,24 @@
             transform: rotate(45deg);
         }
 
+        .projetos{
+            font-family: 'Shippori Mincho B1', serif;
+            font-weight: bold;
+        }
+
     </style>
 
 
     <div class="m-auto w-100 container">
         <div class="row">
             <div class="col-sm">
-                <h3>
+                <h3 class="projetos">
                     Projetos em aberto
                 </h3>
             </div>
             <div class="col-sm">
                 <a href="#" data-toggle="modal" data-target="#criarProjeto">
-                    <button type="button" class="btn btn-outline-secondary float-right">Novo Projeto</button>
+                    <button type="button" class="btn btn-outline-secondary float-right mt-2">Novo Projeto</button>
                 </a>
             </div>
         </div>
@@ -45,17 +60,17 @@
         <table class="table">
             <thead class="thead-light">
             <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Última modificação</th>
-                <th scope="col">Páginas</th>
-                <th scope="col">Ações</th>
+                <th scope="col">NOME</th>
+                <th scope="col">MODIFICADO EM</th>
+                <th scope="col">QUADRINHOS</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             @foreach($abertos as $aberto)
                 <tr>
                     <th class="w-25" scope="row">{{$aberto->nome}}</th>
-                    <td class="w-25">{{$aberto->updated_at}}</td>
+                    <td class="w-25">{{$aberto->updated_at->format('d/m/Y')}}</td>
                     <td class="w-25">{{$aberto->numpag}}</td>
                     <td class="w-25">
                         <a href="{{route('projetos.editPagina',$aberto->id)}}">
@@ -83,26 +98,26 @@
             @endforeach
             </tbody>
         </table>
-        <h3>
-            Projetos concluídos
+        <h3 class="projetos">
+            Projetos finalizados
         </h3>
         <hr>
         <table class="table">
             <thead class="thead-light">
             <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Última modificação</th>
-                <th scope="col">Páginas</th>
-                <th scope="col">Ações</th>
+                <th scope="col">NOME</th>
+                <th scope="col">MODIFICADO EM</th>
+                <th scope="col">QUADRINHOS</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             @foreach($concluidos as $concluido)
                 <tr>
                     <th class="w-25" scope="row">{{$concluido->nome}}</th>
-                    <td class="w-25">{{$concluido->updated_at}}</td>
+                    <td class="w-25">{{$concluido->updated_at->format('d/m/Y')}}</td>
                     <td class="w-25">{{$concluido->numpag}}</td>
-                    <td class="w-25"><a class="mr-auto" href="#">Visualizar</a><a class="ml-4" href="#"></a></td>
+                    <td class="w-25"><a class="mr-auto" href="{{route('projetos.visualizarRoteiro',$concluido)}}}"><button class="btn btn-secondary">Visualizar</button></a>
                 </tr>
             @endforeach
             </tbody>

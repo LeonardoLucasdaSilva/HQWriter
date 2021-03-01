@@ -20,17 +20,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Quicksand:wght@300&display=swap"
           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+    <style>
+    img {
+        max-width: 100%;
+        height: 100%;
+    }
+
+    .indice{
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 115%;
+    }
+    </style>
 </head>
 <body>
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-gray shadow-sm">
         <div class="container">
-            <a class="mt-2 navbar-brand" href="{{ url('/') }}">
-                <h2 style="font-family: 'Quicksand', sans-serif;">HQWriter</h2>
-            </a>
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{asset('storage/hqWriter.png')}}" width="100" height="50" class="d-inline-block align-top" alt="">
+                </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
@@ -42,12 +56,14 @@
                 <ul class="navbar-nav mr-auto">
                     <div id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-item nav-link active ml-2" href="{{route('projetos.index')}}">Meus projetos</a>
-                            <a class="nav-item nav-link active ml-2" href="{{route('painel.index')}}">Painel de roteiros</a>
-                            <a class="nav-item nav-link active ml-2" href="{{route('ajuda.index')}}">Ajuda</a>
+                            <a class="nav-item nav-link active ml-2 indice" href="{{route('projetos.index')}}">Meus projetos</a>
+                            <a class="nav-item nav-link active ml-2 indice" href="{{route('painel.index')}}">Painel de roteiros</a>
+                            <a class="nav-item nav-link active ml-2 indice" href="{{route('ajuda.index')}}">Ajuda</a>
                         </div>
                     </div>
+
                 </ul>
+            </div>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">

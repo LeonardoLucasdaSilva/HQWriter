@@ -194,6 +194,13 @@ class ProjetosController extends Controller
         return redirect('projetos/editar/'.$idroteiro.'?page=1');
     }
 
+    public function visualizarRoteiro(Roteiro $roteiro)
+    {
+        $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
+        $titulo = $roteiro->nome;
+        return view('visualizar',compact('paginas','titulo'));
+    }
+
     public function destroy($id)
     {
         $roteiro = Roteiro::findOrFail($id);

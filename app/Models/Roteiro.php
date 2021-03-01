@@ -24,7 +24,7 @@ class Roteiro extends Model
         return $this->BelongstoMany(Genero::Class);
     }
 
-    public function usuario()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

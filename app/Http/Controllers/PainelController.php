@@ -2,14 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genero;
+use App\Models\Genero_Roteiro;
+use App\Models\Pagina;
+use App\Models\Roteiro;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class PainelController extends Controller
 {
     public function index()
     {
-        return view('painel.index');
+        $publicos = Roteiro::where('is_public', true)->where('is_concluido', true)->with('paginas')->get();
+        foreach ($publicos as $publico) {
+            $publico->numpag = $publico->paginas->count();
+            $publico->generos_selecionados = $publico->generos;
+            $publico->autor = $publico->user->name;
+
+        }
+
+        $generos = Genero::all();
+        return view('painel.index', compact('generos', 'publicos'));
+    }
+
+    public function visualizarGenero($id)
+    {
+        $genero = Genero::where('id',$id)->first();
+        for($x=0;$x<count($genero->roteiros);$x++){
+            if($genero->roteiros[$x]->is_public==true && $genero->roteiros[$x]->is_concluido==true){
+                $publicos[]=$genero->roteiros[$x];
+            }
+        }
+
+        foreach ($publicos as $publico) {
+            $publico->numpag = $publico->paginas->count();
+            $publico->generos_selecionados = $publico->generos;
+            $publico->autor = $publico->user->name;
+        }
+
+        $generos = Genero::all();
+        return view('painel.index', compact('generos', 'publicos'));
     }
 
     public function create()
@@ -31,7 +65,7 @@ class PainelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -42,7 +76,7 @@ class PainelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function edit($id)
@@ -54,7 +88,7 @@ class PainelController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -65,7 +99,7 @@ class PainelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function destroy($id)

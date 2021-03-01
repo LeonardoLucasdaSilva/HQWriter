@@ -33,4 +33,6 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/projetos/editar/{pagina}','ProjetosController@updatePagina')->name('projetos.updatePagina');
     Route::post('/projetos/nova/{pagina}','ProjetosController@novaPagina')->name('projetos.novaPagina');
     Route::delete('/projetos/apagar/{pagina}','ProjetosController@apagarPagina')->name('projetos.apagarPagina');
+    Route::get('/projetos/visualizar/{roteiro}','ProjetosController@visualizarRoteiro')->name('projetos.visualizarRoteiro');
+    Route::get('/projetos/genero/{roteiro}','PainelController@visualizarGenero')->name('visualizarGenero');
 });
