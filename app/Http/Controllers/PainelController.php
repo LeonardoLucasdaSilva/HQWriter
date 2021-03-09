@@ -29,19 +29,25 @@ class PainelController extends Controller
 
     public function visualizarGenero($id)
     {
+        $publicosteste=null;
         $genero = Genero::where('id',$id)->first();
         for($x=0;$x<count($genero->roteiros);$x++){
             if($genero->roteiros[$x]->is_public==true && $genero->roteiros[$x]->is_concluido==true){
                 $publicos[]=$genero->roteiros[$x];
+                $publicosteste=1;
             }
         }
 
-        foreach ($publicos as $publico) {
-            $publico->numpag = $publico->paginas->count();
-            $publico->generos_selecionados = $publico->generos;
-            $publico->autor = $publico->user->name;
+        if($publicosteste!=null) {
+            foreach ($publicos as $publico) {
+                $publico->numpag = $publico->paginas->count();
+                $publico->generos_selecionados = $publico->generos;
+                $publico->autor = $publico->user->name;
+            }
         }
-
+        else{
+            $publicos=null;
+        }
         $generos = Genero::all();
         return view('painel.index', compact('generos', 'publicos'));
     }

@@ -16,7 +16,16 @@ class CreatePaginasTable extends Migration
         Schema::create('paginas', function (Blueprint $table) {
             $table->id();
             $table->TEXT('conteudo');
-            $table->foreignId('roteiro_id')->references('id')->on('roteiros');
+            $table->string('plano');
+            $table->string('angulo');
+            $table->string('lado');
+            $table->TEXT('anotacoes');
+            $table->boolean('is_flashback');
+            $table->boolean('is_subjetivo');
+            $table->boolean('is_impacto');
+            $table->boolean('is_off');
+            $table->foreignId('roteiro_id')->references('id')->on('roteiros')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

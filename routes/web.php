@@ -34,5 +34,27 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/projetos/nova/{pagina}','ProjetosController@novaPagina')->name('projetos.novaPagina');
     Route::delete('/projetos/apagar/{pagina}','ProjetosController@apagarPagina')->name('projetos.apagarPagina');
     Route::get('/projetos/visualizar/{roteiro}','ProjetosController@visualizarRoteiro')->name('projetos.visualizarRoteiro');
+    Route::get('/projetos/personagem/{roteiro}','ProjetosController@criarPersonagem')->name('projetos.criarPersonagem');
     Route::get('/projetos/genero/{roteiro}','PainelController@visualizarGenero')->name('visualizarGenero');
+    Route::post('/projetos/personagem/novo/{personagem}','ProjetosController@novoPersonagem')->name('projetos.novoPersonagem');
+    Route::get('/projetos/fala/{personagem}/{pagina}/{tipo}','ProjetosController@lockFala')->name('projetos.lockFala');
+    Route::get('/projetos/apagarpersonagem/{personagem}','ProjetosController@removerPersonagem')->name('projetos.removerPersonagem');
+    Route::get('/projetos/apagarfala/{fala}','ProjetosController@removerFala')->name('projetos.removerFala');
+    Route::post('/projetos/formato/novo/{formato}','ProjetosController@novoFormato')->name('projetos.novoFormato');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

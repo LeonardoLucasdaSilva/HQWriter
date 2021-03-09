@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Char;
+use App\Models\Column;
+use App\Models\Fala;
+use App\Models\Format;
 use App\Models\Genero;
 use App\Models\Genero_Roteiro;
 use App\Models\Pagina;
 use App\Models\Roteiro;
+use App\Models\Row;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -55,18 +60,27 @@ class ProjetosController extends Controller
         $roteiro->user_id = Auth::id();
         $roteiro = [
             'nome' => $request->nome,
-            'is_marvelway' =>$is_marvelway,
-            'is_public'=>$is_public,
-            'is_concluido'=>0
+            'is_marvelway' => $is_marvelway,
+            'is_public' => $is_public,
+            'is_concluido' => 0
         ];
         $pagina = [
-            'conteudo'=> "",
+            'conteudo' => "",
+            'plano' => "",
+            'angulo' => "",
+            'lado' => "",
+            'anotacoes' => "",
+            'is_flashback' => false,
+            'is_subjetivo' => false,
+            'is_impacto' => false,
+            'is_off' => false,
         ];
         $roteiro = Auth::user()->roteiros()->create($roteiro);
         $roteiro->paginas()->create($pagina)->save();
         $roteiro->generos()->attach($request->generos);
         $roteiro->save();
-        return redirect()->route('projetos.index');
+        $id = $roteiro->id;
+        return view('createFormato',compact('id'));
     }
 
     public function novaPagina($id)
@@ -75,11 +89,28 @@ class ProjetosController extends Controller
             ->get();
         $roteiro = $roteiros[0];
         $pagina = [
-            'conteudo'=> "",
+            'conteudo' => "",
+            'plano' => "",
+            'angulo' => "",
+            'lado' => "",
+            'anotacoes' => "",
+            'is_flashback' => false,
+            'is_subjetivo' => false,
+            'is_impacto' => false,
+            'is_off' => false,
         ];
         $roteiro->paginas()->create($pagina)->save();
         $numpags = $roteiro->paginas()->count();
-        return redirect('projetos/editar/'.$id.'?page='.$numpags);
+        $formatos = $roteiro->formats()->get();
+        dd($formatos);
+        $totalquadrinhos = 0;
+        for($x=0;$x<count($formatos);$x++){
+            $totalquadrinhos += $formatos[$x]->quadrinhos;
+        }
+        if($roteiro->formats()->count()==0 && $numpags==1 || $totalquadrinhos<$numpags){
+            return view('createFormato',compact('id'));
+        }
+        return redirect('projetos/editar/' . $id . '?page=' . $numpags);
     }
 
     /**
@@ -137,15 +168,150 @@ class ProjetosController extends Controller
             ->get();
         $roteiro = $roteiros[0];
         $pagina = $roteiro->paginas()->paginate(1);
-        return view('Projetos.editpagina',compact('pagina'));
+        $personagens = $roteiro->chars()->get();
+        $falas = $pagina[0]->falas()->get();
+        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'falas'));
     }
 
     public function updatePagina(Request $request, $id)
     {
         $pagina = Pagina::where('id', $id)->first();
-        $pagina->conteudo = $request->conteudo;
+        switch ($request->plano) {
+            case "panoramico":
+                $pagina->plano = "Plano panorâmico";
+                break;
+            case "planogeral":
+                $pagina->plano = "Plano geral";
+                break;
+            case "planoconjunto":
+                $pagina->plano = "Plano conjunto";
+                break;
+            case "planomedio":
+                $pagina->plano = "Plano médio";
+                break;
+            case "planoamericano":
+                $pagina->plano = "Plano americano";
+                break;
+            case "planomeio":
+                $pagina->plano = "Meio primeiro plano";
+                break;
+            case "primeiroplano":
+                $pagina->plano = "Primeiro plano";
+                break;
+            case "primeirissimoplano":
+                $pagina->plano = "Primeiríssimo plano";
+                break;
+            case "planodetalhe":
+                $pagina->plano = "Plano detalhe";
+                break;
+        }
+
+        switch ($request->angulo) {
+            case "normal":
+                $pagina->angulo = "Normal";
+                break;
+            case "alta":
+                $pagina->angulo = "Câmera alta (Plongée)";
+                break;
+            case "baixa":
+                $pagina->angulo = "Câmera baixa (Contra-Plongée)";
+                break;
+        }
+
+        switch ($request->lado) {
+            case "frontal":
+                $pagina->lado = "Frontal";
+                break;
+            case "tresquartos":
+                $pagina->lado = "3/4";
+                break;
+            case "perfil":
+                $pagina->lado = "Perfil";
+                break;
+            case "denuca":
+                $pagina->lado = "De nuca";
+                break;
+        }
+
+        if ($request->flashback) {
+            if ($request->flashback == "flashback") {
+                $pagina->is_flashback = true;
+            }
+        } else {
+            $pagina->is_flashback = false;
+        }
+
+
+        if ($request->subjetivo) {
+            if ($request->subjetivo == "subjetivo") {
+                $pagina->is_subjetivo = true;
+            }
+        } else {
+            $pagina->is_subjetivo = false;
+        }
+
+        if ($request->impacto) {
+            if ($request->impacto == "impacto") {
+                $pagina->is_impacto = true;
+            }
+        } else {
+            $pagina->is_impacto = false;
+        }
+
+        if ($request->off) {
+            if ($request->off == "off") {
+                $pagina->is_off = true;
+            }
+        } else {
+            $pagina->is_off = false;
+        }
+
+        if ($request->conteudo) {
+            $pagina->conteudo = $request->conteudo;
+        } else {
+            $pagina->anotacoes = "";
+        }
+        if ($request->anotacoes) {
+            $pagina->anotacoes = $request->anotacoes;
+        } else {
+            $pagina->anotacoes = "";
+        }
+        if ($request->fala) {
+            foreach ($request->fala as $fala) {
+                $newFala = Fala::where('id', $fala['id'])->first();
+                if ($fala['conteudo'] != null) {
+                    $newFala->conteudo = $fala['conteudo'];
+                } else {
+                    $newFala->conteudo = "";
+                }
+
+                switch ($fala['balao']) {
+                    case "normal":
+                        $newFala->balao = "Normal";
+                        break;
+                    case "cochicho":
+                        $newFala->balao = "Cochicho";
+                        break;
+                    case "grito":
+                        $newFala->balao = "Grito";
+                        break;
+                    case "triste":
+                        $newFala->balao = "Triste";
+                        break;
+                    case "pensamento":
+                        $newFala->balao = "Pensamento";
+                        break;
+                    case "medo":
+                        $newFala->balao = "Medo";
+                        break;
+                }
+
+                $newFala->save();
+            }
+        }
+
         $pagina->save();
-        return redirect('projetos/editar/'.$pagina->roteiro->id.'?page='.$request->page);
+        return redirect()->back()->with('salvas', 'Alterações salvas com sucesso!');
     }
 
 
@@ -188,18 +354,107 @@ class ProjetosController extends Controller
         $pagina = Pagina::findOrFail($id);
         $idroteiro = $pagina->roteiro->id;
         $numpags = $pagina->roteiro->paginas()->count();
-        if($numpags>1) {
+        if ($numpags > 1) {
             $pagina->delete();
         }
-        return redirect('projetos/editar/'.$idroteiro.'?page=1');
+        return redirect('projetos/editar/' . $idroteiro . '?page=1');
     }
 
     public function visualizarRoteiro(Roteiro $roteiro)
     {
         $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
-        $titulo = $roteiro->nome;
-        return view('visualizar',compact('paginas','titulo'));
+        $queryautor = User::where('id', $roteiro->user_id)->get();
+        $autor = $queryautor[0]->name;
+        foreach ($paginas as $pagina) {
+            $pagina->falas = $pagina->falas()->get();
+        }
+        return view('visualizar', compact('paginas', 'roteiro', 'autor'));
     }
+
+    public function criarPersonagem(Roteiro $roteiro)
+    {
+        return view('personagem', compact('roteiro'));
+    }
+
+    public function novoPersonagem(Request $request, $roteiro)
+    {
+        $personagem = new Char();
+        $personagem->nome = $request->nome;
+        $personagem->descricao = $request->descricao;
+        $personagem->roteiro_id = $roteiro;
+        $personagem->save();
+        return redirect('projetos/editar/' . $roteiro . '?page=1');
+    }
+
+    public function novoFormato(Request $request, $roteiro)
+    {
+        $formato = new Format();
+        $formato->roteiro_id = $roteiro;
+        $formato->quadrinhos = $request->linhas * $request->colunas;
+        $formato->save();
+        for($x=0;$x<$request->linhas;$x++){
+            $linha = new Row();
+            $linha->format_id = $formato->id;
+            $linha->save();
+            for($y=0;$y<$request->colunas;$y++){
+                $coluna = new Column();
+                $coluna->row_id = $linha->id;
+                $coluna->save();
+            }
+        }
+        $pagina = Pagina::where('roteiro_id',$roteiro)->latest('created_at')->first();
+        return redirect()->action(
+            [ProjetosController::class, 'editPagina'], ['pagina' => $roteiro]
+        );
+
+    }
+
+    public function lockFala($personagem, $pagina,$tipo)
+    {
+        $paginas = Pagina::where('id', $pagina)->first();
+        if($tipo == 'fala') {
+            if ($paginas->falas()->count() >= 5) {
+                return redirect()->back()->with('statusFala', 'Limite de cinco falas por quadrinho atingido!');
+            } else {
+                $fala = new Fala();
+                $fala->conteudo = '';
+                $fala->balao = '';
+                $fala->char_id = $personagem;
+                $fala->pagina_id = $pagina;
+                $fala->save();
+                return redirect()->back()->with('statusFala', 'Fala adicionada!');
+            }
+        }
+        else{
+            if ($paginas->falas()->where('balao','legenda')->count() >= 5) {
+                return redirect()->back()->with('statusFala', 'Limite de cinco legendas por quadrinho atingido!');
+            }
+            else{
+                $fala = new Fala();
+                $fala->conteudo = '';
+                $fala->balao = 'legenda';
+                $fala->char_id = $personagem;
+                $fala->pagina_id = $pagina;
+                $fala->save();
+                return redirect()->back()->with('statusFala', 'Legenda adicionada!');
+            }
+        }
+    }
+
+    public function removerPersonagem($personagem)
+    {
+        $personagem = Char::where('id', $personagem)->first();
+        $personagem->delete();
+        return redirect()->back();
+    }
+
+    public function removerFala($fala)
+    {
+        $fala = Fala::where('id', $fala)->first();
+        $fala->delete();
+        return redirect()->back();
+    }
+
 
     public function destroy($id)
     {

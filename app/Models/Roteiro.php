@@ -34,6 +34,16 @@ class Roteiro extends Model
         return $this->HasMany(Pagina::class);
     }
 
+    public function chars()
+    {
+        return $this->HasMany(Char::class);
+    }
+
+    public function formats()
+    {
+        return $this->HasMany(Format::class);
+    }
+
 
 
 
