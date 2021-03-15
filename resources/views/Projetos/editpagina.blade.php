@@ -388,7 +388,7 @@
                                         <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar fala</button>
                                     </a>
                                     <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'legenda'])}}">
-                                        <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar legenda</button>
+                                        <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar legenda</button><br>
                                     </a>
                                 </div>
                             @endforeach
