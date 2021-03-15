@@ -391,7 +391,7 @@
                                         <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar legenda</button><br>
                                     </a>
                                 </div>
-                                <hr class="mt-2">
+                                <hr class="mt-4">
                             @endforeach
                             <a class="m-auto" href="{{route('projetos.criarPersonagem',$pag->roteiro)}}">
                                 <button type="button" class="m-auto d-inline btn btn-success">Novo
