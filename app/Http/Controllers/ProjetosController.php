@@ -322,9 +322,9 @@ class ProjetosController extends Controller
             case "salvar":
                 return redirect()->back();
             case "novapagina":
-                return redirect()->route('Projetos.novaPagina',$pagina->roteiro->id);
+                return redirect()->route('projetos.novaPagina',$pagina->roteiro->id);
             case "concluido":
-                return redirect()->route('Projetos.concluir',$pagina->roteiro->id);
+                return redirect()->route('projetos.concluir',$pagina->roteiro->id);
         }
 
         return redirect()->back()->with('salvas', 'Alterações salvas com sucesso!');
@@ -356,7 +356,7 @@ class ProjetosController extends Controller
         $roteiro->is_concluido = 0;
         $roteiro->save();
         $roteiro->generos()->sync($request->generos);
-        return redirect()->route('Projetos.index');
+        return redirect()->route('projetos.index');
     }
 
     /**
@@ -490,7 +490,7 @@ class ProjetosController extends Controller
     {
         $roteiro = Roteiro::findOrFail($id);
         $roteiro->delete();
-        return redirect()->route('Projetos.index');
+        return redirect()->route('projetos.index');
     }
 
     public function concluir($id)
