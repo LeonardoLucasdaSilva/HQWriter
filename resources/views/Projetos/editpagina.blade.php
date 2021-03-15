@@ -380,15 +380,15 @@
                                     <p>{{$personagem->nome}} - </p>
                                     <small class="d-block">"{{$personagem->descricao}}"</small>
                                     <a href="{{route('projetos.removerPersonagem',$personagem->id)}}">
-                                        <button type="button" class="btn-sm btn-danger float-right ">
-                                            &times;
+                                        <button type="button" class="btn-sm btn-danger float-left ">
+                                            Apagar personagem
                                         </button>
                                     </a>
                                     <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'fala'])}}">
-                                        <button type="button" class="btn-sm btn-secondary float-right mr-1">Adicionar fala</button>
+                                        <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar fala</button>
                                     </a>
                                     <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'legenda'])}}">
-                                        <button type="button" class="btn-sm btn-secondary float-right mr-1">Adicionar legenda</button>
+                                        <button type="button" class="btn-sm btn-secondary float-left mr-1">Adicionar legenda</button>
                                     </a>
                                 </div>
                             @endforeach
