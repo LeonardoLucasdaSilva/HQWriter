@@ -31,7 +31,7 @@ class ProjetosController extends Controller
             $concluido->numpag = $concluido->paginas->count();
         }
         $generos = Genero::all();
-        return view('projetos.index', compact('generos', 'concluidos', 'abertos'));
+        return view('projetos/index', compact('generos', 'concluidos', 'abertos'));
     }
 
     public function create()
@@ -155,7 +155,7 @@ class ProjetosController extends Controller
         } else {
             $is_selected[3] = "checked";
         }
-        return view('projetos.edit', compact('generos', 'roteiro', 'is_selected', 'is_selected_generos'));
+        return view('projetos/edit', compact('generos', 'roteiro', 'is_selected', 'is_selected_generos'));
     }
 
     public function editPagina($id)
@@ -178,7 +178,7 @@ class ProjetosController extends Controller
         if ($roteiro->formats()->count() == 0 && $numpags == 1 || $totalquadrinhos < $numpags) {
             return view('createFormato', compact('id', 'numformatos'));
         }
-        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'falas','totalquadrinhos','numpags'));
+        return view('Projetos/editpagina', compact('pagina', 'roteiro', 'personagens', 'falas','totalquadrinhos','numpags'));
     }
 
     public function updatePagina(Request $request, $id)
@@ -323,9 +323,9 @@ class ProjetosController extends Controller
             case "salvar":
                 return redirect()->back();
             case "novapagina":
-                return redirect()->route('projetos.novaPagina',$pagina->roteiro->id);
+                return redirect()->route('projetos/novaPagina',$pagina->roteiro->id);
             case "concluido":
-                return redirect()->route('projetos.concluir',$pagina->roteiro->id);
+                return redirect()->route('projetos/concluir',$pagina->roteiro->id);
         }
 
         return redirect()->back()->with('salvas', 'Alterações salvas com sucesso!');
@@ -357,7 +357,7 @@ class ProjetosController extends Controller
         $roteiro->is_concluido = 0;
         $roteiro->save();
         $roteiro->generos()->sync($request->generos);
-        return redirect()->route('projetos.index');
+        return redirect()->route('projetos/index');
     }
 
     /**
@@ -492,7 +492,7 @@ class ProjetosController extends Controller
     {
         $roteiro = Roteiro::findOrFail($id);
         $roteiro->delete();
-        return redirect()->route('projetos.index');
+        return redirect()->route('projetos/index');
     }
 
     public function concluir($id)
