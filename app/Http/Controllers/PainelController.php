@@ -24,7 +24,7 @@ class PainelController extends Controller
         }
 
         $generos = Genero::all();
-        return view('painel/index', compact('generos', 'publicos'));
+        return view('Painel.index', compact('generos', 'publicos'));
     }
 
     public function visualizarGenero($id)
@@ -49,7 +49,7 @@ class PainelController extends Controller
             $publicos=null;
         }
         $generos = Genero::all();
-        return view('painel/index', compact('generos', 'publicos'));
+        return view('Painel.index', compact('generos', 'publicos'));
     }
 
     public function create()
