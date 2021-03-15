@@ -376,6 +376,7 @@
                         </div>
                         <div class="modal-body">
                             @foreach($personagens as $personagem)
+                                <hr>
                                 <div class="d-block mb-2">
                                     <p class="d-block">{{$personagem->nome}} </p>
                                     <small class="d-block mb-2">"{{$personagem->descricao}}"</small>
