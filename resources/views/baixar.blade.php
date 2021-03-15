@@ -1,4 +1,4 @@
-@extends('layouts.navbar2')
+@extends('layouts.imprimir')
 @section('content')
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -74,99 +74,66 @@
     <div class="container">
         <h3 class="titulo">{{$roteiro->nome}}</h3>
         <h5 class="text-center mt-5 d-inline">por {{$autor}}</h5>
-        <a href="{{route('projetos.baixar',$roteiro)}}">
-            <button class="btn btn-outline-dark float-right mb-3">Fazer download</button>
-        </a>
         <hr>
         @for($x=0; $x<count($paginas);$x++)
-            <h2 class="subtitulo mt-4">Quadrinho {{$show+1}} / Pagina {{$teste}}</h2>
+            <h2 class="subtitulo mt-4">Quadrinho {{$show+1}} / Página {{$teste}}</h2>
             @if($paginas[$x]->plano!="")
                 <h4 class="desc">{{$paginas[$x]->plano}}, {{$paginas[$x]->angulo}}, {{$paginas[$x]->lado}}</h4>
             @endif
             <h5 class="subtitulo2"><i>Script</i></h5>
-            <tr>
-                <th class="w-25" scope="row">
+                <div class="w-25" scope="row">
                     @if($paginas[$x]->conteudo=="")
                         <div class="conteudo mb-2">Script vazio</div>
                     @else
                         <div class="conteudo mb-2">{!! html_entity_decode($paginas[$x]->conteudo) !!}</div>
                     @endif
-                </th>
-            </tr>
+                </div>
 
             <div class="row">
                 <h5 class="subtitulo2 mb-3 ml-3"><i>Falas</i></h5>
             </div>
             <div class="row">
-                <div class="col bordas mt-1 p-3 pl-4 mb-1 falas ml-3" style="width:100%">
+                <div class="col bordas mt-1 p-3 pt-3 pl-4 mb-1 falas ml-3" style="width:100%">
                     @if($paginas[$x]->falas)
                         @foreach($paginas[$x]->falas as $fala)
                             <div class="row">
                                 <div class="col-9">
                                     <h5 class="conteudo mt-3" id="nomeFala"><b>{{$fala->char->nome}}</b></h5>
-                                    <small class="conteudo mb-4">Tipo de balão: {{$fala->balao}}</small>
+                                    <small class="conteudo mb-3">Tipo de balão: {{$fala->balao}}</small>
                                     @if($fala->conteudo=="")
-                                        <h6 class="conteudo d-block mt-2">"Conteúdo vazio"</h6>
+                                        <h6 class="conteudo d-block">"Conteúdo vazio"</h6>
                                     @else
-                                    <h6 class="conteudo d-block mt-2">"{{$fala->conteudo}}"</h6>
-                                        @endif
-                                </div>
-                                <div class="col-3">
-                                    <img class="mt-2" src="{{asset('storage/'.($fala->balao).'.jpg')}}">
+                                        <h6 class="conteudo d-block">"{{$fala->conteudo}}"</h6>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
                     @endif
                     @if(count($paginas[$x]->falas)==0)
-                            <div>Não há falas a serem exibidas</div>
-                        @endif
+                        <div>Não há falas a serem exibidas</div>
+                    @endif
 
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <div class="container bordas mt-1 pt-1 pb-3 pr-4 pl-4 mb-1" style="height:200px;width:100%">
 
                         @if($x<$formatos[$cont]->quadrinhos)
-                            @for($y=0;$y<count($formatos[$cont]->rows);$y++)
-
-                                <div class="row mt-1" style="height:{{$formatos[$cont]->rows[$y]->altura}}">
-                                    @for($z=0;$z<count($formatos[$cont]->rows[$y]->columns);$z++)
-                                        <div class="col bordas ml-1" id={{$paginas[$x]->id}}{{$idquadrinho}}></div>
-                                        @php
-                                            $idquadrinho++;
-                                        @endphp
-                                    @endfor
-                                </div>
-                            @endfor
                             @if($x+1 == $formatos[$cont]->quadrinhos)
-                                    @php
-                                        $teste++;
-                                        $show=-1;
-                                    @endphp
-                                @endif
+                                @php
+                                    $show=-1;
+                                    $idquadrinho++;
+                                    $teste++;
+                                @endphp
+                            @endif
                         @else
                             @php
-
                                 $cont++;
                             @endphp
                             @if($formatos[$cont]->quadrinhos-$x==1)
                                 @php
-                                    $teste++;
+                                    $idquadrinho++;
+                                        $teste++;
                                 @endphp
                             @endif
-                            @for($y=0;$y<count($formatos[$cont]->rows);$y++)
-                                <div class="row mt-1" style="height:{{$formatos[$cont]->rows[$y]->altura}}">
-                                    @for($z=0;$z<count($formatos[$cont]->rows[$y]->columns);$z++)
-                                        <div class="col bordas ml-1" id={{$paginas[$x]->id}}{{$idquadrinho}}></div>
-                                        @php
-                                            $idquadrinho++;
-                                        @endphp
-                                    @endfor
-                                </div>
-                            @endfor
                         @endif
-
-                    </div>
-                </div>
             </div>
 
             @if($paginas[$x]->is_flashback||$paginas[$x]->is_subjetivo||$paginas[$x]->is_impacto||$paginas[$x]->is_off)
@@ -188,29 +155,27 @@
                     @endif
                     @if($paginas[$x]->anotacoes)
                         <h5 class="subtitulo2 mt-3 mb-2">Notas</h5>
-                        <tr>
-                            <th class="w-25" scope="row">
+                            <div class="w-25" scope="row">
                                 <div class="notas">{{$paginas[$x]->anotacoes}}</div>
-                            </th>
-                        </tr>
+                            </div>
                     @endif
 
 
 
-                        @php
-                            if($x>=10){
-                                $paginaid = strval($paginas[$x]->id).strval($x%$formatos[$cont-1]->quadrinhos);
-                                }
-                             else if($cont!=0){
-                                $paginaid = intval((strval($paginas[$x]->id).strval($x))) - $formatos[$cont-1]->quadrinhos;
-                                }
+                    @php
+                        if($x>=10){
+                            $paginaid = strval($paginas[$x]->id).strval($x%$formatos[$cont-1]->quadrinhos);
+                            }
+                         else if($cont!=0){
+                            $paginaid = intval((strval($paginas[$x]->id).strval($x))) - $formatos[$cont-1]->quadrinhos;
+                            }
 
-                        @endphp
-                        <script>
+                    @endphp
+                    <script>
 
-                            var cor = document.getElementById('{{$paginaid}}');
-                            cor.style.borderColor = 'red';
-                        </script>
+                        var cor = document.getElementById('{{$paginaid}}');
+                        cor.style.borderColor = 'red';
+                    </script>
                     <script>
 
                         var cor = document.getElementById('{{$paginas[$x]->id}}{{$x}}');
@@ -220,10 +185,16 @@
                         $idquadrinho=0;
                         $show++;
                     @endphp
-                        <hr>
+                        <footer style="page-break-after: always;"></footer>
                     @endfor
                 </div>
             </div>
+            <h3><i>Roteiro feito com HQWriter.</i></h3>
+            <h4>ESPECIFICAÇÕES</h4>
+            <h5>Nome: {{$roteiro->nome}}</h5>
+            <h5>Autor: {{$autor}}</h5>
+            <h5>Total de quadrinhos: {{$formatos[$cont]->quadrinhos}}</h5>
+            <h5>Total de páginas: {{$teste}}</h5>
     </body>
     <!--AAAA
     <th class="w-25" scope="row"></th>
@@ -231,4 +202,9 @@
     <td class="w-25"></td>
     <td class="w-25"><a class="mr-auto" href="#"><button class="btn btn-secondary">Visualizar</button></a> -->
 @endsection
+
+
+
+
+
 

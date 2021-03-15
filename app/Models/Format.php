@@ -13,4 +13,9 @@ class Format extends Model
     {
         return $this->HasMany(Row::class);
     }
+
+    public function roteiro()
+    {
+        return $this->belongsTo(Roteiro::class);
+    }
 }

@@ -24,8 +24,13 @@
         }
 
         function disableAlert3() {
-            var divalert2 = document.getElementById('salvas')
-            divalert2.style.display = "none";
+            var divalert3 = document.getElementById('salvas')
+            divalert3.style.display = "none";
+        }
+
+        function disableAlert4() {
+            var divalert4 = document.getElementById('concluido')
+            divalert4.style.display = "none";
         }
 
 
@@ -37,7 +42,12 @@
     <script>
         tinymce.init({
             selector: '#mytextarea',
-            language: 'pt_BR'
+            language: 'pt_BR',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            }
         });
     </script>
 
@@ -66,6 +76,11 @@
             text-decoration: none;
         }
 
+        .dialogos {
+            font-size: x-large;
+            color: #1b4b72;
+        }
+
     </style>
 </head>
 
@@ -77,30 +92,30 @@
             <div class="container">
                 @endif
                 @foreach($pagina as $pag)
-                    <form action="{{route('projetos.updatePagina',$pag->id)}}" method="post">
+                    <form class ="d-inline formpag" action="{{route('projetos.updatePagina',$pag->id)}}" method="post">
                         @csrf
                         @method('PUT')
                         @if($roteiro->is_marvelway==false)
                             <div class="row">
-                                <div class="col">
+                                <div class="col" style="overflow-y:auto; height:760px;">
                                     <div class="form-group">
                                         @php
-                                        $legenda=false;
-                                        $fala = false;
-                                            for($x=0;$x<count($falas);$x++){
-                                                if($falas[$x]->balao=='legenda'){
-                                                    $legenda=true;
-                                                }
-                                                else{
-                                                    $fala=true;
-                                                }
+                                            $legenda=false;
+                                            $fala = false;
+                                                for($x=0;$x<count($falas);$x++){
+                                                    if($falas[$x]->balao=='legenda'){
+                                                        $legenda=true;
+                                                    }
+                                                    else{
+                                                        $fala=true;
+                                                    }
 
-                                            }
+                                                }
                                         @endphp
-                                        <h5>Balões </h5>
+                                        <h5 class="dialogos">Balões </h5>
                                         @if($fala==false)
                                             <h6>Nenhum balão adicionado</h6>
-                                            @endif
+                                        @endif
                                         @for($x=0;$x<count($falas);$x++)
                                             @if($falas[$x]->balao!='legenda')
                                                 <hr>
@@ -113,6 +128,7 @@
                                                     </button>
                                                 </a>
                                                 <textarea class="form-control mb-2 d-block" rows="3"
+                                                          class="conteudo"
                                                           id="fala[{{$x}}][conteudo]"
                                                           name="fala[{{$x}}][conteudo]">{{$falas[$x]->conteudo}}</textarea>
                                                 <input type="hidden" id="fala[{{$x}}][id]"
@@ -145,7 +161,7 @@
                                             @endif
                                         @endfor
                                         <hr>
-                                        <h5>Legendas</h5>
+                                        <h5 class="dialogos">Legendas</h5>
                                         @if($legenda==false)
                                             <h6>Nenhuma legenda adicionada</h6>
                                         @endif
@@ -168,13 +184,13 @@
                                                        value="{{$falas[$x]->id}}">
                                             @endif
                                         @endfor
-                                        <a href="#" data-toggle="modal" data-target="#criarPersonagem">
-                                            <button type="button"
-                                                    class="mt-2 btn btn-outline-secondary">
-                                                Adicionar fala
-                                            </button>
-                                        </a>
                                     </div>
+                                    <a href="#" data-toggle="modal" data-target="#criarPersonagem">
+                                        <button type="button"
+                                                class="mt-2 btn btn-outline-secondary">
+                                            Adicionar fala
+                                        </button>
+                                    </a>
                                 </div>
                                 @endif
                                 @if($roteiro->is_marvelway==false)
@@ -208,6 +224,15 @@
                                                          id="salvas" role="alert">
                                                         {{session('salvas')}}
                                                         <a class="fechar" type="button" onclick='disableAlert3()'>
+                                                            &times;
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                                @if(session('concluido'))
+                                                    <div class="alert alert-danger alert-dismissible fade show"
+                                                         id="concluido" role="alert">
+                                                        {{session('concluido')}}
+                                                        <a class="fechar" type="button" onclick='disableAlert4()'>
                                                             &times;
                                                         </a>
                                                     </div>
@@ -340,21 +365,23 @@
                                                 </div>
                                             @endif
                                     </div>
-                                    <button type="submit" class="btn btn-outline-success mt-2">Salvar
-                                    </button>
-                            </div></form>
-                    <form action="{{route('projetos.novaPagina',$pag->roteiro->id)}}" method="POST">
-                        @CSRF
-                        <button type="submit" class="btn btn-outline-secondary mt-2">Nova página</button>
-                    </form>
-                    <form action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
-                        @CSRF
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger mt-2">Apagar página</button>
-                    </form>
-                    <div class="w-100 text-center">
+
+                            </div>
+                            <button name="teste" value="salvar" type="submit" class="float-right btn btn-outline-success mt-2 d-inline mr-2">Salvar
+                            </button>
+                @if($numpags==$totalquadrinhos)
+                    <button type="submit" name="teste" value="concluido" class="float-left btn btn-outline-success mt-2 d-inline ml-2">Definir como concluído</button>
+                    @endif
+                        <button type="submit" name="teste" value="novapagina" class="float-right btn btn-outline-secondary mt-2 d-inline mr-1 ml-1">Nova página</button>
+                            <form class = "d-inline" action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
+                                @CSRF
+                                @method('DELETE')
+                                <button type="submit" class="float-right btn btn-outline-danger mt-2 d-inline mr-1">Apagar página</button>
+                            </form>
+                    <div class="w-100 text-center d-inline float-right">
                         {{$pagina->links()}}
                     </div>
+                    </form>
                 @endforeach
             </div>
 
@@ -373,16 +400,16 @@
                                 <div class="d-block mb-3">
                                     <span>{{$personagem->nome}} - </span>
                                     <small>"{{$personagem->descricao}}"</small>
-                                    <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'fala'])}}">
-                                        <button type="button" class="btn-sm btn-info float-right">+</button>
-                                    </a>
-                                    <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'legenda'])}}">
-                                        <button type="button" class="btn-sm btn-info float-right">+</button>
-                                    </a>
                                     <a href="{{route('projetos.removerPersonagem',$personagem->id)}}">
-                                        <button type="button" class="btn-sm btn-danger float-right mr-1">
+                                        <button type="button" class="btn-sm btn-danger float-right ">
                                             &times;
                                         </button>
+                                    </a>
+                                    <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'fala'])}}">
+                                        <button type="button" class="btn-sm btn-secondary float-right mr-1">Adicionar fala</button>
+                                    </a>
+                                    <a href="{{route('projetos.lockFala',['personagem' => $personagem, 'pagina' => $pag, 'tipo' => 'legenda'])}}">
+                                        <button type="button" class="btn-sm btn-secondary float-right mr-1">Adicionar legenda</button>
                                     </a>
                                 </div>
                             @endforeach
@@ -395,6 +422,7 @@
                     </div>
                 </div>
             </div>
+
 </body>
 </html>
 @endsection

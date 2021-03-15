@@ -2,22 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44d82f88-27e1-43f8-ac19-a78fc8b673c3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tcc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tcc.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PainelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PainelController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Pagina.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Pagina.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Roteiro.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Roteiro.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Format.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Format.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_21_202458_create_paginas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_21_202458_create_paginas_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Painel/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Painel/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_03_08_011124_create_rows_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_03_08_011124_create_rows_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/Projetos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Projetos/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/createFormato.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/createFormato.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layouts/navbar2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/navbar2.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/visualizar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/visualizar.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
@@ -144,6 +145,11 @@
       <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
       <path value="$PROJECT_DIR$/vendor/laravel/ui" />
       <path value="$PROJECT_DIR$/vendor/lucascudo/laravel-pt-br-localization" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-svg-lib" />
+      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
+      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
     </include_path>
   </component>
   <component name="ProjectId" id="1nIn2OiNp24hlJRVpbEMDrhxZzz" />
@@ -167,11 +173,11 @@
       <recent name="F:\xampp\htdocs\tcc\public\storage" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\xampp\htdocs\tcc\app\Http\Controllers" />
+      <recent name="F:\xampp\htdocs\tcc\app\Http\User" />
+      <recent name="F:\xampp\htdocs\tcc\app\Http" />
+      <recent name="F:\xampp\htdocs\tcc\app\Http\Controllers\User" />
       <recent name="F:\xampp\htdocs\tcc\public\storage" />
-      <recent name="F:\xampp\htdocs\tcc\public\js" />
-      <recent name="F:\xampp\htdocs\tcc\resources\views\Painel" />
-      <recent name="F:\xampp\htdocs\tcc\resources\views\Projetos" />
-      <recent name="F:\xampp\htdocs\tcc\resources\views" />
     </key>
   </component>
   <component name="RunManager">
@@ -229,6 +235,18 @@
       <workItem from="1615175744588" duration="4155000" />
       <workItem from="1615180193317" duration="169000" />
       <workItem from="1615265402390" duration="2238000" />
+      <workItem from="1615311748761" duration="22256000" />
+      <workItem from="1615406512279" duration="21225000" />
+      <workItem from="1615495252815" duration="9772000" />
+      <workItem from="1615514943197" duration="2720000" />
+      <workItem from="1615598313360" duration="6038000" />
+      <workItem from="1615654911639" duration="8217000" />
+      <workItem from="1615669874686" duration="7971000" />
+      <workItem from="1615739851505" duration="1857000" />
+      <workItem from="1615743700871" duration="128000" />
+      <workItem from="1615757838526" duration="4485000" />
+      <workItem from="1615768094617" duration="4191000" />
+      <workItem from="1615838344457" duration="1474000" />
     </task>
     <servers />
   </component>

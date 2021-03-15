@@ -73,17 +73,17 @@
                     <td class="w-25">{{$aberto->updated_at->format('d/m/Y')}}</td>
                     <td class="w-25">{{$aberto->numpag}}</td>
                     <td class="w-25">
-                        <a href="{{route('projetos.editPagina',$aberto->id)}}">
+                        <a class="d-inline" href="{{route('projetos.editPagina',$aberto->id)}}">
                             <button type="button" class=" justify-content-center btn btn-outline-success">
                                 Editar
                             </button>
                         </a>
-                        <a href="{{route('projetos.edit',$aberto->id)}}">
+                        <a class="d-inline" href="{{route('projetos.edit',$aberto->id)}}">
                             <button type="button" class="justify-content-center btn btn-outline-secondary">
                                 Redefinir
                             </button>
                         </a>
-                        <form action="{{route('projetos.destroy',$aberto->id)}}" method="POST">
+                        <form class="d-inline" action="{{route('projetos.destroy',$aberto->id)}}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit"

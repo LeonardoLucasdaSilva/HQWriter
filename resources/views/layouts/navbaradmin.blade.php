@@ -27,24 +27,24 @@
 
 
     <style>
-    img {
-        max-width: 100%;
-        height: 100%;
-    }
+        img {
+            max-width: 100%;
+            height: 100%;
+        }
 
-    .indice{
-        font-family: 'Noto Sans KR', sans-serif;
-        font-size: 115%;
-    }
+        .indice{
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 115%;
+        }
     </style>
 </head>
 <body>
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-gray shadow-sm">
         <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('storage/hqWriter.png')}}" width="100" height="50" class="d-inline-block align-top" alt="">
-                </a>
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{asset('storage/hqWriter.png')}}" width="100" height="50" class="d-inline-block align-top" alt="">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
@@ -59,55 +59,53 @@
                             <a class="nav-item nav-link active ml-2 indice" href="{{route('projetos.index')}}">Meus projetos</a>
                             <a class="nav-item nav-link active ml-2 indice" href="{{route('painel.index')}}">Painel de roteiros</a>
                             <a class="nav-item nav-link active ml-2 indice" href="{{route('ajuda.index')}}">Ajuda</a>
-                            @if(Auth::User()->is_admin==true)
                             <a class="nav-item nav-link active ml-2 indice" href="{{route('admin.index')}}">Gerenciar usuários</a>
-                                @endif
                         </div>
                     </div>
 
                 </ul>
             </div>
 
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
 
-                    <!-- Authentication Links -->
-                    @guest
-                        @if (Route::has('login'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                        @endif
+                <!-- Authentication Links -->
+                @guest
+                    @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                    @endif
 
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>
-                        @endif
-                    @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Olá, {{ Auth::user()->name }}
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                    @endif
+                @else
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Olá, {{ Auth::user()->name }}
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                    @endguest
-                </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endguest
+            </ul>
 
 
-    </div>
+        </div>
 
     </nav>
     <main class="py-4">

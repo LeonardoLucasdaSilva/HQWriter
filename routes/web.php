@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if(Auth::check()) {
-        return view('home');
+        return redirect()->route('projetos.index');
     }
     else{
         return view('welcome');
@@ -24,14 +24,15 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth','ativo'])->group(function() {
     Route::resource('home','HomeController');
     Route::resource('painel','PainelController');
     Route::resource('projetos','ProjetosController');
     Route::resource('ajuda','AjudaController');
     Route::get('/projetos/editar/{pagina}','ProjetosController@editPagina')->name('projetos.editPagina');
     Route::put('/projetos/editar/{pagina}','ProjetosController@updatePagina')->name('projetos.updatePagina');
-    Route::post('/projetos/nova/{pagina}','ProjetosController@novaPagina')->name('projetos.novaPagina');
+    Route::get('/projetos/nova/{pagina}','ProjetosController@novaPagina')->name('projetos.novaPagina');
+    Route::post('/projetos/primeira/{pagina}','ProjetosController@primeiraPagina')->name('projetos.primeiraPagina');
     Route::delete('/projetos/apagar/{pagina}','ProjetosController@apagarPagina')->name('projetos.apagarPagina');
     Route::get('/projetos/visualizar/{roteiro}','ProjetosController@visualizarRoteiro')->name('projetos.visualizarRoteiro');
     Route::get('/projetos/personagem/{roteiro}','ProjetosController@criarPersonagem')->name('projetos.criarPersonagem');
@@ -41,20 +42,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/projetos/apagarpersonagem/{personagem}','ProjetosController@removerPersonagem')->name('projetos.removerPersonagem');
     Route::get('/projetos/apagarfala/{fala}','ProjetosController@removerFala')->name('projetos.removerFala');
     Route::post('/projetos/formato/novo/{formato}','ProjetosController@novoFormato')->name('projetos.novoFormato');
+    Route::post('/projetos/concluir/{roteiro}','ProjetosController@concluir')->name('projetos.concluir');
+    Route::get('/projetos/baixar/{roteiro}','ProjetosController@baixar')->name('projetos.baixar');
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth', 'admin','ativo'])->group(function() {
+    Route::resource('admin','AdminController');
+    Route::get('/usuarios/editar/{usuario}','AdminController@editar')->name('editarusuario');
+    Route::post('/usuarios/update/{usuario}','AdminController@updateUsuario')->name('updateusuario');
+    Route::post('/usuarios/inativar/{usuario}','AdminController@inativarUsuario')->name('inativarusuario');
+    Route::get('/usuarios/ativar/{usuario}','AdminController@ativarUsuario')->name('ativarusuario');
+});

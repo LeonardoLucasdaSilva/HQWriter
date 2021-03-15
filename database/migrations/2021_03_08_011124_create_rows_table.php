@@ -17,6 +17,7 @@ class CreateRowsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('format_id')->references('id')->on('formats');
+            $table->string('altura');
         });
     }
 
