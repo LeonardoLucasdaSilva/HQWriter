@@ -183,7 +183,6 @@ class ProjetosController extends Controller
 
     public function updatePagina(Request $request, $id)
     {
-        dd($request);
         $pagina = Pagina::where('id', $id)->first();
         switch ($request->plano) {
             case "panoramico":
