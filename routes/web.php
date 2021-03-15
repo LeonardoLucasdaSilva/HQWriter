@@ -42,7 +42,7 @@ Route::middleware(['auth','ativo'])->group(function() {
     Route::get('/projetos/apagarpersonagem/{personagem}','ProjetosController@removerPersonagem')->name('projetos.removerPersonagem');
     Route::get('/projetos/apagarfala/{fala}','ProjetosController@removerFala')->name('projetos.removerFala');
     Route::post('/projetos/formato/novo/{formato}','ProjetosController@novoFormato')->name('projetos.novoFormato');
-    Route::post('/projetos/concluir/{roteiro}','ProjetosController@concluir')->name('projetos.concluir');
+    Route::get('/projetos/concluir/{roteiro}','ProjetosController@concluir')->name('projetos.concluir');
     Route::get('/projetos/baixar/{roteiro}','ProjetosController@baixar')->name('projetos.baixar');
 });
 
