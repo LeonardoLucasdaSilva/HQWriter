@@ -18,7 +18,6 @@ class CreatePaginasTable extends Migration
             $table->TEXT('conteudo');
             $table->string('plano');
             $table->string('angulo');
-            $table->string('lado');
             $table->TEXT('anotacoes');
             $table->boolean('is_flashback');
             $table->boolean('is_subjetivo');

@@ -313,27 +313,6 @@
                                                             </option>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="lado"><h5>Lado do ângulo</h5></label>
-                                                        <select class="form-control" id="lado" name="lado">
-                                                            <option value="frontal"
-                                                                    @if($pag->lado=="Frontal") selected @endif>
-                                                                Frontal
-                                                            </option>
-                                                            <option value="tresquartos"
-                                                                    @if($pag->lado=="3/4") selected @endif>
-                                                                3/4
-                                                            </option>
-                                                            <option value="perfil"
-                                                                    @if($pag->lado=="Perfil") selected @endif>
-                                                                Perfil
-                                                            </option>
-                                                            <option value="denuca"
-                                                                    @if($pag->lado=="De nuca") selected @endif>
-                                                                De nuca
-                                                            </option>
-                                                        </select>
-                                                    </div>
                                                     <hr>
                                                     <div class="form-group">
                                                         <h5 class="mb-3">Extra: </h5>

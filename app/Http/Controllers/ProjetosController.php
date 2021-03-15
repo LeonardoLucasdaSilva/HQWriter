@@ -226,21 +226,6 @@ class ProjetosController extends Controller
                 break;
         }
 
-        switch ($request->lado) {
-            case "frontal":
-                $pagina->lado = "Frontal";
-                break;
-            case "tresquartos":
-                $pagina->lado = "3/4";
-                break;
-            case "perfil":
-                $pagina->lado = "Perfil";
-                break;
-            case "denuca":
-                $pagina->lado = "De nuca";
-                break;
-        }
-
         if ($request->flashback) {
             if ($request->flashback == "flashback") {
                 $pagina->is_flashback = true;

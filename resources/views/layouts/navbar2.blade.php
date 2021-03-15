@@ -9,7 +9,7 @@
 
     <title>HQWriter</title>
 
-    <link rel="icon" href="{{asset('storage/HQlogo.jpg')}}"/>
+    <link rel="icon" href="https://media.discordapp.net/attachments/320612371334823938/821150857096724510/HQlogo.jpg?width=676&height=676"/>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -41,7 +41,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-gray shadow-sm">
         <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('storage/hqWriter.png')}}" width="100" height="50" class="d-inline-block align-top" alt="">
+                    <img src="https://cdn.discordapp.com/attachments/320612371334823938/821150652503162919/hqWriter.png" width="100" height="50" class="d-inline-block align-top" alt="">
                 </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"

@@ -111,9 +111,6 @@
                                     <h6 class="conteudo d-block mt-2">"{{$fala->conteudo}}"</h6>
                                         @endif
                                 </div>
-                                <div class="col-3">
-                                    <img class="mt-2" src="{{asset('storage/'.($fala->balao).'.jpg')}}">
-                                </div>
                             </div>
                         @endforeach
                     @endif
