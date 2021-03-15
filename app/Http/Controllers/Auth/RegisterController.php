@@ -73,6 +73,6 @@ class RegisterController extends Controller
 
     public function redirectPath()
     {
-        return route('projetos.index');
+        return redirect()->route('projetos.index');
     }
 }
