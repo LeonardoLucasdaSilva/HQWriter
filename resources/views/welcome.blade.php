@@ -28,7 +28,7 @@
                     opacity: 1;
                 }
                 #sec1 {
-                    background: url({{asset('storage/home.jpg')}}) no-repeat center center fixed;
+                    background: url('https://media.discordapp.net/attachments/320612371334823938/821151990884859945/home.jpg?width=1199&height=681') no-repeat center center fixed;
                     display:table;
                     height: 100%;
                     position: relative;

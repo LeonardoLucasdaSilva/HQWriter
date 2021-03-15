@@ -4,10 +4,7 @@
     <list default="true" id="44d82f88-27e1-43f8-ac19-a78fc8b673c3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_21_202458_create_paginas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_21_202458_create_paginas_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/navbar2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/navbar2.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/visualizar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/visualizar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +229,7 @@
       <workItem from="1615743700871" duration="128000" />
       <workItem from="1615757838526" duration="4485000" />
       <workItem from="1615768094617" duration="4191000" />
-      <workItem from="1615838344457" duration="7595000" />
+      <workItem from="1615838344457" duration="7822000" />
     </task>
     <servers />
   </component>
