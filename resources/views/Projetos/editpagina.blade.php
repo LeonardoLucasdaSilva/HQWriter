@@ -337,7 +337,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="anotacoes"><h5>Anotações</h5></label>
-                                                        <textarea class="form-control" rows="11"
+                                                        <textarea class="form-control" rows="15"
                                                                   id="anotacoes"
                                                                   name="anotacoes">{{$pag->anotacoes}}</textarea>
                                                     </div>
