@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if(Auth::check()) {
-        return view('home');
+        return redirect()->route('projetos.index');
     }
     else{
         return view('welcome');
