@@ -377,8 +377,8 @@
                         <div class="modal-body">
                             @foreach($personagens as $personagem)
                                 <div class="d-block mb-3">
-                                    <span>{{$personagem->nome}} - </span>
-                                    <small>"{{$personagem->descricao}}"</small>
+                                    <p>{{$personagem->nome}} - </p>
+                                    <small class="d-block">"{{$personagem->descricao}}"</small>
                                     <a href="{{route('projetos.removerPersonagem',$personagem->id)}}">
                                         <button type="button" class="btn-sm btn-danger float-right ">
                                             &times;
