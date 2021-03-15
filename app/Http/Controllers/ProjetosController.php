@@ -324,6 +324,7 @@ class ProjetosController extends Controller
             case "novapagina":
                 return redirect()->route('projetos.novaPagina',$pagina->roteiro->id);
             case "concluido":
+                dd($pagina->roteiro->id);
                 return redirect()->route('projetos.concluir',$pagina->roteiro->id);
         }
 
