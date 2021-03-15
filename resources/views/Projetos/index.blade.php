@@ -117,7 +117,7 @@
                     <th class="w-25" scope="row">{{$concluido->nome}}</th>
                     <td class="w-25">{{$concluido->updated_at->format('d/m/Y')}}</td>
                     <td class="w-25">{{$concluido->numpag}}</td>
-                    <td class="w-25"><a class="mr-auto" href="{{route('projetos.visualizarRoteiro',$concluido)}}}"><button class="btn btn-secondary">Visualizar</button></a>
+                    <td class="w-25"><a class="mr-auto" href="{{route('projetos.visualizarRoteiro',$concluido)}}"><button class="btn btn-secondary">Visualizar</button></a>
                 </tr>
             @endforeach
             </tbody>

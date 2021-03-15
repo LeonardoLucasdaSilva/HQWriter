@@ -60,7 +60,7 @@
                 <div class="m-auto w-100 container">
                     <div class="row">
                         <div class="col-sm">
-                            <a href="{{route('projetos.visualizarRoteiro',$publico)}}}">
+                            <a href="{{route('projetos.visualizarRoteiro',$publico)}}">
                                 <h4>{{$publico->nome}}</h4>
                             </a>
                             @foreach($publico->generos_selecionados as $genero)
