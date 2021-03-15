@@ -378,6 +378,7 @@ class ProjetosController extends Controller
 
     public function visualizarRoteiro($roteiro)
     {
+        dd($roteiro);
         $roteiro = Roteiro::where('id',$roteiro)->first();
         $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
         $queryautor = User::where('id', $roteiro->user_id)->get();
