@@ -376,8 +376,9 @@ class ProjetosController extends Controller
         return redirect('projetos/editar/' . $idroteiro . '?page=1');
     }
 
-    public function visualizarRoteiro(Roteiro $roteiro)
+    public function visualizarRoteiro($roteiro)
     {
+        $roteiro = Roteiro::where('id',$roteiro)->first();
         $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
         $queryautor = User::where('id', $roteiro->user_id)->get();
         $autor = $queryautor[0]->name;
