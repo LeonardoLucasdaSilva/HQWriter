@@ -438,7 +438,6 @@ class ProjetosController extends Controller
 
 
         $formato->save();
-        $pagina = Pagina::where('roteiro_id', $roteiro)->latest('created_at')->first();
         return redirect()->back();
 
     }
