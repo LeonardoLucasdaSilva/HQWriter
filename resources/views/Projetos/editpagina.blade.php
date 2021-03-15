@@ -376,6 +376,7 @@
                     </form>
                             <form class = "d-inline" action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
                                 @CSRF
+                                @method('DELETE')
                                 <button type="submit" class="float-right btn btn-outline-danger mt-2 d-inline mr-1">Apagar página</button>
                             </form>
                     <div class="w-100 text-center d-inline float-right">
