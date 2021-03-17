@@ -351,12 +351,12 @@
                 @if($numpags==$totalquadrinhos)
                     <button type="submit" name="teste" value="concluido" class="float-left btn btn-outline-success mt-2 d-inline ml-2">Definir como concluído</button>
                     @endif
-                        <button type="submit" name="teste" value="novapagina" class="float-right btn btn-outline-secondary mt-2 d-inline mr-1 ml-1">Nova página</button>
+                        <button type="submit" name="teste" value="novapagina" class="float-right btn btn-outline-secondary mt-2 d-inline mr-1 ml-1">Novo quadrinho</button>
                     </form>
                             <form class = "d-inline" action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
                                 @CSRF
                                 @method('DELETE')
-                                <button type="submit" class="float-right btn btn-outline-danger mt-2 d-inline mr-1">Apagar página</button>
+                                <button type="submit" class="float-right btn btn-outline-danger mt-2 d-inline mr-1">Apagar quadrinho</button>
                             </form>
                     <div class="w-100 text-center d-inline float-right">
                         {{$pagina->links()}}

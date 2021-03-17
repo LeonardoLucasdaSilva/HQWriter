@@ -79,7 +79,7 @@
         </a>
         <hr>
         @for($x=0; $x<count($paginas);$x++)
-            <h2 class="subtitulo mt-4">Quadrinho {{$show+1}} / Pagina {{$teste}}</h2>
+            <h2 class="subtitulo mt-4">Pagina {{$teste}} / Quadrinho {{$show+1}}</h2>
             @if($paginas[$x]->plano!="")
                 <h4 class="desc">{{$paginas[$x]->plano}}, {{$paginas[$x]->angulo}}, {{$paginas[$x]->lado}}</h4>
             @endif
@@ -108,15 +108,15 @@
                                     @if($fala->conteudo=="")
                                         <h6 class="conteudo d-block mt-2">"Conteúdo vazio"</h6>
                                     @else
-                                    <h6 class="conteudo d-block mt-2">"{{$fala->conteudo}}"</h6>
-                                        @endif
+                                        <h6 class="conteudo d-block mt-2">"{{$fala->conteudo}}"</h6>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
                     @endif
                     @if(count($paginas[$x]->falas)==0)
-                            <div>Não há falas a serem exibidas</div>
-                        @endif
+                        <div>Não há falas a serem exibidas</div>
+                    @endif
 
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-6">
@@ -135,11 +135,11 @@
                                 </div>
                             @endfor
                             @if($x+1 == $formatos[$cont]->quadrinhos)
-                                    @php
-                                        $teste++;
-                                        $show=-1;
-                                    @endphp
-                                @endif
+                                @php
+                                    $teste++;
+                                    $show=-1;
+                                @endphp
+                            @endif
                         @else
                             @php
 
@@ -194,30 +194,27 @@
 
 
 
-                        @php
+                    @php
+
+                        if($cont!=0 && $x<=9){
+                                $paginaid = intval((strval($paginas[$x]->id).strval($x))) - $formatos[$cont-1]->quadrinhos;
+
                             if($x>=10){
                                 $paginaid = strval($paginas[$x]->id).strval($x%$formatos[$cont-1]->quadrinhos);
                                 }
-                             else if($cont!=0){
-                                $paginaid = intval((strval($paginas[$x]->id).strval($x))) - $formatos[$cont-1]->quadrinhos;
-                                }
+                        }
 
-                        @endphp
-                        <script>
-
-                            var cor = document.getElementById('{{$paginaid}}');
-                            cor.style.borderColor = 'red';
-                        </script>
+                    @endphp
                     <script>
 
                         var cor = document.getElementById('{{$paginas[$x]->id}}{{$x}}');
-                        cor.style.borderColor = 'red';
+                        cor.style.backgroundColor = 'red';
                     </script>
                     @php
                         $idquadrinho=0;
                         $show++;
                     @endphp
-                        <hr>
+                    <hr>
                     @endfor
                 </div>
             </div>

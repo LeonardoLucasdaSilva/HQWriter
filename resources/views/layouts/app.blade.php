@@ -25,11 +25,8 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-gray shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-gray">
             <div class="container">
-                <a class="mt-2 navbar-brand" href="{{ url('/') }}">
-                    <img src="https://cdn.discordapp.com/attachments/320612371334823938/821150652503162919/hqWriter.png" width="100" height="60" class="d-inline-block align-top" alt="">
-                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -46,13 +43,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <h5 class="ml-2 mr-2 mt-2 font-weight-bold h4"><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></h5>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <h5 class="mt-2 font-weight-bold h4"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></h5>
                                 </li>
                             @endif
                         @else

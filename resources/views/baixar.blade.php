@@ -76,7 +76,7 @@
         <h5 class="text-center mt-5 d-inline">por {{$autor}}</h5>
         <hr>
         @for($x=0; $x<count($paginas);$x++)
-            <h2 class="subtitulo mt-4">Quadrinho {{$show+1}} / Página {{$teste}}</h2>
+            <h2 class="subtitulo mt-4">Página {{$teste}} / Quadrinho {{$show+1}}</h2>
             @if($paginas[$x]->plano!="")
                 <h4 class="desc">{{$paginas[$x]->plano}}, {{$paginas[$x]->angulo}}, {{$paginas[$x]->lado}}</h4>
             @endif
