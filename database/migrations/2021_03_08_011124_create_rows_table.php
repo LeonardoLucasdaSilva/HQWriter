@@ -16,7 +16,7 @@ class CreateRowsTable extends Migration
         Schema::create('rows', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('format_id')->references('id')->on('formats');
+            $table->foreignId('format_id')->references('id')->on('formats')->onDelete('cascade');
             $table->string('altura');
         });
     }

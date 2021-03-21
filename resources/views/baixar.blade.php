@@ -10,128 +10,148 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Quicksand:wght@300&display=swap"
           rel="stylesheet">
+    <head>
+        <style>
+            .titulo {
+                font-family: 'Shippori Mincho B1', serif;
+                font-weight: bold;
+                color: #1b4b72;
+                font-size: 300%;
+                margin-bottom: 0.6%;
+            }
 
-    <style>
-        .titulo {
-            font-family: 'Shippori Mincho B1', serif;
-            font-weight: bold;
-            color: #1b4b72;
-            font-size: 300%;
-            margin-bottom: 0.6%;
-        }
+            .subtitulo {
+                font-family: 'Noto Sans KR', sans-serif;
+                text-align: center;
+                font-weight: bold;
+            }
 
-        .falas {
-            border: 1px solid black;
-            padding: 3%;
-        }
+            .subtitulo2 {
+                font-family: 'Noto Sans KR', sans-serif;
+                font-weight: bold;
+                text-align: justify;
+            }
 
-        .subtitulo {
-            font-family: 'Noto Sans KR', sans-serif;
-            text-align: center;
-            font-weight: bold;
-        }
+            .desc {
+                font-family: 'Noto Sans KR', sans-serif;
+                text-align: center;
+            }
 
-        .subtitulo2 {
-            font-family: 'Noto Sans KR', sans-serif;
-            font-weight: bold;
-            text-align: justify;
-        }
+            .notas {
+                font-family: 'Open Sans', Arial, sans-serif;
+                text-align: justify;
+            }
 
-        .desc {
-            font-family: 'Noto Sans KR', sans-serif;
-            text-align: center;
-        }
+            .conteudo {
+                font-family: 'Noto Sans KR', sans-serif;
+            }
 
-        .notas {
-            font-family: 'Open Sans', Arial, sans-serif;
-            text-align: justify;
-        }
+            .tipo {
+                display: inline;
+                background-color: lightgray;
+            }
 
-        .conteudo {
-            font-family: 'Noto Sans KR', sans-serif;
-        }
+            #nomeFala {
+                color: #4c110f;
+            }
 
-        .tipo {
-            display: inline;
-            background-color: lightgray;
-        }
+            .bordas {
+                border: 0.5px solid black;
+            }
 
-        #nomeFala {
-            color: #4c110f;
-        }
-
-        .bordas {
-            border: 1px solid black;
-        }
-
-        body {
-            background-color: white;
-        }
+            body {
+                background-color: white;
+            }
 
 
-    </style>
+        </style>
+    </head>
     <body>
     <div class="container">
         <h3 class="titulo">{{$roteiro->nome}}</h3>
         <h5 class="text-center mt-5 d-inline">por {{$autor}}</h5>
         <hr>
         @for($x=0; $x<count($paginas);$x++)
+            @if($x==0)
+                <h1>Página {{$teste}}</h1>
+                <div class="container bordas" style="height: 400px; width:300px; padding: 1px">
+                    @for($y=0;$y<count($formatos[$teste-1]->rows);$y++)
+                        <div class="row"
+                             style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; @if(count($formatos[$teste-1]->rows)==2) margin-top: 3px; margin-bottom: -15px; @else margin-top: 3px; margin-bottom: 5px; @endif">
+                            @for($z=0;$z<count($formatos[$teste-1]->rows[$y]->columns);$z++)
+                                <div class="bordas"
+                                     style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; width:{{(300/count($formatos[$teste-1]->rows[$y]->columns)-5)}}px;display: inline-block;vertical-align:middle; @if(count($formatos[$teste-1]->rows[$y]->columns)>1)@if($z==0)margin-top: @if(count($formatos[$teste-1]->rows)==2) 20px @else 10px @endif ; @endif margin-bottom: -8px; @endif;">
+                                </div>
+                            @endfor
+                        </div>
+                    @endfor
+                </div>
+                <div style="page-break-after: always;"></div>
+            @endif
             <h2 class="subtitulo mt-4">Página {{$teste}} / Quadrinho {{$show+1}}</h2>
             @if($paginas[$x]->plano!="")
-                <h4 class="desc">{{$paginas[$x]->plano}}, {{$paginas[$x]->angulo}}, {{$paginas[$x]->lado}}</h4>
+                <h4 class="desc">{{$paginas[$x]->plano}}, {{$paginas[$x]->angulo}}</h4>
             @endif
             <h5 class="subtitulo2"><i>Script</i></h5>
-                <div class="w-25" scope="row">
-                    @if($paginas[$x]->conteudo=="")
-                        <div class="conteudo mb-2">Script vazio</div>
-                    @else
-                        <div class="conteudo mb-2">{!! html_entity_decode($paginas[$x]->conteudo) !!}</div>
-                    @endif
-                </div>
-
-            <div class="row">
-                <h5 class="subtitulo2 mb-3 ml-3"><i>Falas</i></h5>
+            <div class="w-25" scope="row">
+                @if($paginas[$x]->conteudo=="")
+                    <div class="conteudo mb-2">Script vazio</div>
+                @else
+                    <div class="conteudo mb-2">{!! html_entity_decode($paginas[$x]->conteudo) !!}</div>
+                @endif
             </div>
             <div class="row">
-                <div class="col bordas mt-1 p-3 pt-3 pl-4 mb-1 falas ml-3" style="width:100%">
-                    @if($paginas[$x]->falas)
-                        @foreach($paginas[$x]->falas as $fala)
-                            <div class="row">
-                                <div class="col-9">
-                                    <h5 class="conteudo mt-3" id="nomeFala"><b>{{$fala->char->nome}}</b></h5>
-                                    <small class="conteudo mb-3">Tipo de balão: {{$fala->balao}}</small>
-                                    @if($fala->conteudo=="")
-                                        <h6 class="conteudo d-block">"Conteúdo vazio"</h6>
-                                    @else
-                                        <h6 class="conteudo d-block">"{{$fala->conteudo}}"</h6>
+                @if($x<$formatos[$cont]->quadrinhos)
+                    @if($x+1 == $formatos[$cont]->quadrinhos)
+                        @php
+                            $show=-1;
+                            $idquadrinho++;
+                            $teste++;
+                        @endphp
+                        <div style="page-break-after: always;"></div>
+                        @if($teste<=count($formatos))
+                            <h1>Página {{$teste}}</h1>
+                            <div class="container bordas" style="height: 400px; width:300px;padding: 2px">
+                                @for($y=0;$y<count($formatos[$teste-1]->rows);$y++)
+                                    <div class="row"
+                                         style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; @if(count($formatos[$teste-1]->rows)==2) margin-top: 3px; margin-bottom: -15px; @else margin-top: 3px; margin-bottom: 5px; @endif">
+                                        @for($z=0;$z<count($formatos[$teste-1]->rows[$y]->columns);$z++)
+                                            <div class="bordas"
+                                                 style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; width:{{(300/count($formatos[$teste-1]->rows[$y]->columns)-5)}}px;display: inline-block;vertical-align:middle; @if(count($formatos[$teste-1]->rows[$y]->columns)>1)@if($z==0)margin-top: @if(count($formatos[$teste-1]->rows)==2) 20px @else 10px @endif ; @endif margin-bottom: -8px; @endif;">
+                                            </div>
+                                        @endfor
+                                    </div>
+                                @endfor
+                                @endif
+                            </div>
+                            <hr>
+                        @endif
+                    @else
+                        @php
+                            $cont++;
+                        @endphp
+                        @if($formatos[$cont]->quadrinhos-$x==1)
+                            @php
+                                $idquadrinho++;
+                                    $teste++;
+                            @endphp
+                            @if($teste<=count($formatos))
+                                <div style="page-break-after: always;"></div>
+                                <h1>Página {{$teste}}</h1>
+                                <div class="container bordas" style="height: 400px; width:300px">
+                                    @for($y=0;$y<count($formatos[$teste-1]->rows);$y++)
+                                        <div class="row"
+                                             style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; @if(count($formatos[$teste-1]->rows)==2) margin-top: 3px; margin-bottom: -15px; @else margin-top: 3px; margin-bottom: 5px; @endif">
+                                            @for($z=0;$z<count($formatos[$teste-1]->rows[$y]->columns);$z++)
+                                                <div class="bordas"
+                                                     style="height:{{(400/count($formatos[$teste-1]->rows))-5}}px; width:{{(300/count($formatos[$teste-1]->rows[$y]->columns)-5)}}px;display: inline-block;vertical-align:middle; @if(count($formatos[$teste-1]->rows[$y]->columns)>1)@if($z==0)margin-top: @if(count($formatos[$teste-1]->rows)==2) 20px; margin-bottom: 5px; @else 10px; margin-bottom: -8px; @endif ; @endif margin-bottom: -10px; @endif;">
+                                                </div>
+                                            @endfor
+                                        </div>
+                                    @endfor
                                     @endif
                                 </div>
-                            </div>
-                        @endforeach
-                    @endif
-                    @if(count($paginas[$x]->falas)==0)
-                        <div>Não há falas a serem exibidas</div>
-                    @endif
-
-                </div>
-
-                        @if($x<$formatos[$cont]->quadrinhos)
-                            @if($x+1 == $formatos[$cont]->quadrinhos)
-                                @php
-                                    $show=-1;
-                                    $idquadrinho++;
-                                    $teste++;
-                                @endphp
-                            @endif
-                        @else
-                            @php
-                                $cont++;
-                            @endphp
-                            @if($formatos[$cont]->quadrinhos-$x==1)
-                                @php
-                                    $idquadrinho++;
-                                        $teste++;
-                                @endphp
+                                <hr>
                             @endif
                         @endif
             </div>
@@ -155,9 +175,9 @@
                     @endif
                     @if($paginas[$x]->anotacoes)
                         <h5 class="subtitulo2 mt-3 mb-2">Notas</h5>
-                            <div class="w-25" scope="row">
-                                <div class="notas">{{$paginas[$x]->anotacoes}}</div>
-                            </div>
+                        <div class="w-25" scope="row">
+                            <div class="notas">{{$paginas[$x]->anotacoes}}</div>
+                        </div>
                     @endif
 
 
@@ -185,7 +205,7 @@
                         $idquadrinho=0;
                         $show++;
                     @endphp
-                        <footer style="page-break-after: always;"></footer>
+                    <footer style="page-break-after: always;"></footer>
                     @endfor
                 </div>
             </div>
@@ -194,7 +214,7 @@
             <h5>Nome: {{$roteiro->nome}}</h5>
             <h5>Autor: {{$autor}}</h5>
             <h5>Total de quadrinhos: {{$formatos[$cont]->quadrinhos}}</h5>
-            <h5>Total de páginas: {{$teste}}</h5>
+            <h5>Total de páginas: {{$teste-1}}</h5>
     </body>
     <!--AAAA
     <th class="w-25" scope="row"></th>

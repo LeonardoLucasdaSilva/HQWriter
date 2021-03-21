@@ -51,7 +51,11 @@
                 Usuários ativos
             </h3>
         </div>
-
+        <div class="col-sm">
+            <a href="#" data-toggle="modal" data-target="#criarUsuario">
+                <button type="button" class="btn btn-outline-secondary float-right mt-2">Novo Projeto</button>
+            </a>
+        </div>
     </div>
     <hr>
     <table class="table">
@@ -121,5 +125,44 @@
         @endforeach
         </tbody>
     </table>
+</div>
+<!--Modal Criar-->
+
+<div class="modal fade" id="criarUsuario" aria-labelledby="criarUsuarioLabel" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo usuário</h5>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">+
+                </button>
+            </div>
+            <form action="{{route('admin.store')}}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <h5>Nome: </h5>
+                        <input type="text" class="form-control" name="nome" placeholder="Digite o nome"
+                               required><br>
+                        <h5>Email: </h5>
+                        <input type="text" class="form-control" name="email" placeholder="Digite o email" required><br>
+                        <h5>Senha: </h5>
+                        <input type="password" class="form-control" name="senha" placeholder="Digite a senha" required><br>
+                    </div>
+                    <div class="form-group">
+                        <h5>Permissões: </h5><br>
+                        <input type="radio" id="admin" name="admin" value="sim" required>
+                        <label for="privado">Admin</label><br>
+                        <input type="radio" id="admin" name="admin" value="não" required>
+                        <label for="publico">Usuário</label><br>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-outline-primary">Criar usuário</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
     @endsection

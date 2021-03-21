@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -75,7 +76,19 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $usuario = new User();
+        $usuario -> name = $request-> nome;
+        $usuario -> email = $request-> email;
+        $usuario -> password = Hash::make($request-> senha);
+        if($request->admin == "Sim"){
+            $usuario->is_admin = true;
+        }
+        else{
+            $usuario->is_admin = false;
+        }
+        $usuario-> is_ativo = true;
+        $usuario->save();
+        return redirect()->back();
     }
 
     public function usuarios()

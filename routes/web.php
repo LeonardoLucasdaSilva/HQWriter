@@ -44,6 +44,11 @@ Route::middleware(['auth','ativo'])->group(function() {
     Route::post('/projetos/formato/novo/{formato}','ProjetosController@novoFormato')->name('projetos.novoFormato');
     Route::get('/projetos/concluir/{roteiro}','ProjetosController@concluir')->name('projetos.concluir');
     Route::get('/projetos/baixar/{roteiro}','ProjetosController@baixar')->name('projetos.baixar');
+    Route::get('/projetos/baixareco/{roteiro}','ProjetosController@baixarEco')->name('projetos.baixarEco');
+    Route::get('/formatos/editar/{roteiro}','ProjetosController@editFormatos')->name('projetos.editFormatos');
+    Route::get('/formatos/select/{roteiro}','ProjetosController@selectFormato')->name('projetos.selectformato');
+    Route::post('/projetos/update/{formato}','ProjetosController@updateFormato')->name('projetos.updateFormato');
+    Route::get('/formatos/excluir/{formato}','ProjetosController@excluirFormato')->name('projetos.excluirformato');
 });
 
 Route::middleware(['auth', 'admin','ativo'])->group(function() {

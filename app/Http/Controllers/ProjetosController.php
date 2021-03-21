@@ -158,25 +158,42 @@ class ProjetosController extends Controller
 
     public function editPagina($id)
     {
+
         $roteiros = Roteiro::where('id', $id)->get();
         $roteiro = $roteiros[0];
         $pagina = $roteiro->paginas()->orderBy('id')->paginate(1);
+        $pag = $roteiro->paginas()->orderBy('id');
         $personagens = $roteiro->chars()->get();
-        $falas = $pagina[0]->falas()->get();
         $numpags = $roteiro->paginas()->count();
 
         $formatos = $roteiro->formats()->get();
         $numformatos = count($formatos);
-        if(count($roteiro->formats()->get())>0) {
-            $totalquadrinhos = $formatos[count($roteiro->formats()->get())-1]->quadrinhos;
-        }
-        else{
+        $idquadrinho = 1;
+        if (count($roteiro->formats()->get()) > 0) {
+            $totalquadrinhos = $formatos[count($roteiro->formats()->get()) - 1]->quadrinhos;
+        } else {
             $totalquadrinhos = 0;
         }
         if ($roteiro->formats()->count() == 0 && $numpags == 1 || $totalquadrinhos < $numpags) {
             return view('createFormato', compact('id', 'numformatos'));
         }
-        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'falas','totalquadrinhos','numpags'));
+        $formato = Format::where('roteiro_id', $roteiro->id)->where('quadrinhos', '>=', $pagina->currentPage())->first();
+        $f = Format::where('roteiro_id', $roteiro->id)->where('quadrinhos', '<', $pagina->currentPage())->get();
+        $todos = Format::where('roteiro_id', $roteiro->id)->get();
+        if (count($f) == 0) {
+            $f = 0;
+            $currentPage = 1;
+        } else {
+            $f = $f[count($f) - 1];
+            for ($z = 0; $z < count($todos); $z++) {
+                if ($todos[$z]->id == $f->id) {
+                    $currentPage = $z + 2;
+                }
+            }
+            $f = $f->quadrinhos;
+        }
+        $editando = $pagina->currentPage() - $f;
+        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'totalquadrinhos', 'numpags', 'formato', 'idquadrinho', 'editando', 'currentPage'));
     }
 
     public function updatePagina(Request $request, $id)
@@ -301,13 +318,15 @@ class ProjetosController extends Controller
             }
         }
         $pagina->save();
-        switch($request->teste){
+        switch ($request->teste) {
             case "salvar":
                 return redirect()->back();
             case "novapagina":
-                return redirect()->route('projetos.novaPagina',$pagina->roteiro->id);
+                return redirect()->route('projetos.novaPagina', $pagina->roteiro->id);
             case "concluido":
-                return redirect()->route('projetos.concluir',$pagina->roteiro->id);
+                return redirect()->route('projetos.concluir', $pagina->roteiro->id);
+            case "editarformatacoes":
+                return redirect()->route('projetos.editFormatos', $pagina->roteiro->id);
         }
 
         return redirect()->back()->with('salvas', 'Alterações salvas com sucesso!');
@@ -361,13 +380,10 @@ class ProjetosController extends Controller
 
     public function visualizarRoteiro($roteiro)
     {
-        $roteiro = Roteiro::where('id',$roteiro)->first();
-        $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
+        $roteiro = Roteiro::where('id', $roteiro)->first();
+        $paginas = Pagina::where('roteiro_id', $roteiro->id)->orderby('id')->get();
         $queryautor = User::where('id', $roteiro->user_id)->get();
         $autor = $queryautor[0]->name;
-        foreach ($paginas as $pagina) {
-            $pagina->falas = $pagina->falas()->get();
-        }
         $formatos = $roteiro->formats()->get();
         $cont = 0;
         $idquadrinho = 0;
@@ -375,7 +391,7 @@ class ProjetosController extends Controller
         $teste = 1;
         $a = 0;
         $show = 0;
-        return view('visualizar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont','idquadrinho','paginaid','teste','a','show'));
+        return view('visualizar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont', 'idquadrinho', 'paginaid', 'teste', 'a', 'show'));
     }
 
     public function criarPersonagem(Roteiro $roteiro)
@@ -383,21 +399,16 @@ class ProjetosController extends Controller
         return view('personagem', compact('roteiro'));
     }
 
-    public function novoPersonagem(Request $request, $roteiro)
-    {
-        $personagem = new Char();
-        $personagem->nome = $request->nome;
-        $personagem->descricao = $request->descricao;
-        $personagem->roteiro_id = $roteiro;
-        $personagem->save();
-        return redirect('projetos/editar/' . $roteiro . '?page=1');
-    }
-
     public function novoFormato(Request $request, $roteiro)
     {
-        $roteiro = Roteiro::where('id',$roteiro)->first();
+        $roteiro = Roteiro::where('id', $roteiro)->first();
         $formato = new Format();
         $formato->roteiro_id = $roteiro->id;
+        if ($request->descricao) {
+            $formato->descricao = $request->descricao;
+        } else {
+            $formato->descricao = "";
+        }
         $formato->quadrinhos = 0;
         $formato->save();
         $linhas = explode(',', $request->format);
@@ -416,43 +427,13 @@ class ProjetosController extends Controller
         }
         if (count($roteiro->formats()->get()) > 1) {
             $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
-            $formato->quadrinhos += $formatobase[count($formatobase)-2]->quadrinhos;
+            $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
         }
 
 
         $formato->save();
         return redirect()->back();
 
-    }
-
-    public function lockFala($personagem, $pagina, $tipo)
-    {
-        $paginas = Pagina::where('id', $pagina)->first();
-        if ($tipo == 'fala') {
-            if ($paginas->falas()->count() >= 5) {
-                return redirect()->back()->with('statusFala', 'Limite de cinco falas por quadrinho atingido!');
-            } else {
-                $fala = new Fala();
-                $fala->conteudo = '';
-                $fala->balao = '';
-                $fala->char_id = $personagem;
-                $fala->pagina_id = $pagina;
-                $fala->save();
-                return redirect()->back()->with('statusFala', 'Fala adicionada!');
-            }
-        } else {
-            if ($paginas->falas()->where('balao', 'legenda')->count() >= 5) {
-                return redirect()->back()->with('statusFala', 'Limite de cinco legendas por quadrinho atingido!');
-            } else {
-                $fala = new Fala();
-                $fala->conteudo = '';
-                $fala->balao = 'legenda';
-                $fala->char_id = $personagem;
-                $fala->pagina_id = $pagina;
-                $fala->save();
-                return redirect()->back()->with('statusFala', 'Legenda adicionada!');
-            }
-        }
     }
 
     public function removerPersonagem($personagem)
@@ -480,28 +461,25 @@ class ProjetosController extends Controller
     public function concluir($id)
     {
 
-        $roteiro = Roteiro::where('id',$id)->first();
+        $roteiro = Roteiro::where('id', $id)->first();
         $totalquadrinhos = $roteiro->formats()->get();
-        $totalquadrinhos = $totalquadrinhos[count($totalquadrinhos)-1];
-        if(count($roteiro->paginas)==$totalquadrinhos->quadrinhos){
-            $roteiro->is_concluido=1;
+        $totalquadrinhos = $totalquadrinhos[count($totalquadrinhos) - 1];
+        if (count($roteiro->paginas) == $totalquadrinhos->quadrinhos) {
+            $roteiro->is_concluido = 1;
             $roteiro->save();
             return redirect()->action(
                 [ProjetosController::class, 'index'],
             );
-        }
-        else{
+        } else {
             return redirect()->back()->with('concluido', 'Falha ao concluir roteiro, quadrinhos e formatos não conferem');
         }
     }
 
-    public function baixar(Roteiro $roteiro){
+    public function baixar(Roteiro $roteiro)
+    {
         $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
         $queryautor = User::where('id', $roteiro->user_id)->get();
         $autor = $queryautor[0]->name;
-        foreach ($paginas as $pagina) {
-            $pagina->falas = $pagina->falas()->get();
-        }
         $formatos = $roteiro->formats()->get();
         $cont = 0;
         $idquadrinho = 0;
@@ -509,7 +487,176 @@ class ProjetosController extends Controller
         $teste = 1;
         $a = 0;
         $show = 0;
-        $pdf = \PDF::loadView('baixar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont','idquadrinho','paginaid','teste','a','show'))->setOptions(['defaultFont' => 'sans-serif']);
+        $pdf = \PDF::loadView('baixar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont', 'idquadrinho', 'paginaid', 'teste', 'a', 'show'))->setOptions(['defaultFont' => 'sans-serif']);
         return $pdf->stream('roteiro.pdf');
+    }
+
+    public function baixarEco(Roteiro $roteiro)
+    {
+        $paginas = Pagina::where('roteiro_id', $roteiro->id)->get();
+        $queryautor = User::where('id', $roteiro->user_id)->get();
+        $autor = $queryautor[0]->name;
+        $formatos = $roteiro->formats()->get();
+        $cont = 0;
+        $idquadrinho = 0;
+        $paginaid = 0;
+        $teste = 1;
+        $a = 0;
+        $show = 0;
+        $pdf = \PDF::loadView('baixareco', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont', 'idquadrinho', 'paginaid', 'teste', 'a', 'show'))->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('roteiro.pdf');
+    }
+
+    public function editFormatos($roteiro)
+    {
+        $formatos = Format::where('roteiro_id', $roteiro)->orderby('id')->get();
+        return view('editFormatos', compact('formatos'));
+    }
+
+    public function selectFormato($formato)
+    {
+        $formato = Format::where('id', $formato)->first();
+        $todos = Format::where('roteiro_id', $formato->roteiro_id)->orderby('id')->get();
+        for ($x = 0; $x < count($todos); $x++) {
+            if ($todos[$x]->id == $formato->id) {
+                $editando = $x;
+            }
+        }
+        return view('updateFormato', compact('formato', 'editando'));
+    }
+
+    public function updateFormato(Request $request, $formato)
+    {
+        $formato = Format::where('id',$formato)->first();
+        $numquadros = $formato->quadrinhos;
+        for($x=0;$x<count($formato->rows);$x++){
+            $formato->rows[$x]->delete();
+        }
+        $roteiro = Roteiro::where('id', $formato->roteiro_id)->first();
+        $formato->roteiro_id = $roteiro->id;
+        if ($request->descricao) {
+            $formato->descricao = $request->descricao;
+        } else {
+            $formato->descricao = "";
+        }
+        $formato->quadrinhos = 0;
+        $formato->save();
+        $linhas = explode(',', $request->format);
+        for ($x = 1; $x < count($linhas); $x++) {
+            $linha = new Row();
+            $linha->format_id = $formato->id;
+            $altura = (100 / (count($linhas) - 1)) - 1;
+            $linha->altura = $altura . '%';
+            $linha->save();
+            for ($y = 0; $y < $linhas[$x]; $y++) {
+                $coluna = new Column();
+                $coluna->row_id = $linha->id;
+                $coluna->save();
+                $formato->quadrinhos++;
+            }
+        }
+        if (count($roteiro->formats()->get()) > 1) {
+            $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
+            $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
+        }
+
+        $todos = Format::where('roteiro_id',$formato->roteiro_id)->orderby('id')->get();
+        for($x=0;$x<count($todos);$x++){
+            if($todos[$x]->id == $formato->id){
+                $numid = $x;
+            }
+        }
+
+        if($numid!=0) {
+            $formato->quadrinhos += $todos[$numid-1]->quadrinhos;
+        }
+        $numquadros-=$formato->quadrinhos;
+        $formatosseguintes = Format::where('id', '>',$formato->id)->orderby('id')->get();
+        for($z=0;$z<count($formatosseguintes);$z++){
+            $formatosseguintes[$z]->quadrinhos-=$numquadros;
+            $formatosseguintes[$z]->save();
+        }
+
+        $formato->save();
+
+
+        return redirect()->back();
+       /* $formatoantigo = Format::where('id',$formato)->first();
+        $numlinhas = 0;
+        $linhas = explode(',', $request->format);
+        if ($request->descricao) {
+            $formatoantigo->descricao = $request->descricao;
+        } else {
+            $formatoantigo->descricao = "";
+        }
+        $formatoantigo->quadrinhos = 0;
+        $formatoantigo->save();
+
+        for ($x = 1; $x < count($linhas); $x++) {
+            if ($linhas[$x] > 0) {
+                $numlinhas++;
+            }
+        }
+        if (count($formatoantigo->rows) > $numlinhas) {
+            do {
+                $formatoantigo->rows[(count($formatoantigo->rows) - 1)]->delete();
+                $formatoantigo->save();
+                $teste = Row::where('format_id',$formatoantigo->id)->get();
+            } while (count($teste) > $numlinhas);
+        } else {
+            do {
+
+                $linha = new Row();
+                $linha->format_id = $formatoantigo->id;
+                $altura = (100 / (count($linhas) - 1)) - 1;
+                $linha->altura = $altura . '%';
+                $linha->save();
+                $formatoantigo->save();
+                $teste = Row::where('format_id',$formatoantigo->id)->get();
+            } while (count($teste) < $numlinhas);
+        }
+
+        for ($y = 0; $y < count($formatoantigo->rows); $y++) {
+            if (count($formatoantigo->rows[$y]->columns) < $linhas[$y+1]) {
+                do {
+                    $coluna = new Column();
+                    $coluna->row_id = $formatoantigo->rows[$y]->id;
+                    $coluna->save();
+                    $formatoantigo->save();
+                    $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
+                } while (count($teste) < $linhas[$y+1]);
+            }
+            else{
+                do {
+                    if(count($formatoantigo->rows[$y]->columns)!=0) {
+                        $formatoantigo->rows[$y]->columns[(count($formatoantigo->rows[$y]->columns) - 1)]->delete();
+                        $formatoantigo->save();
+                        $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
+                    }
+                } while (count($teste) > $linhas[$y+1]);
+            }
+        }
+        $formatoantigo->save();*/
+        return redirect()->back();
+    }
+    public function excluirFormato($formato)
+    {
+        $formato = Format::where('id',$formato)->first();
+
+        $allformats = Format::where('id', '>',$formato->id)->orderby('id')->get();
+
+        $todos = Format::where('roteiro_id',$formato->roteiro_id)->orderby('id')->get();
+        for($x=0;$x<count($todos);$x++){
+            if($todos[$x]->id == $formato->id){
+                $numid = $x;
+            }
+        }
+        for($z=count($allformats);$z>$numid;$z--){
+                $allformats[$z - 1]->quadrinhos = $allformats[$z - 1]->quadrinhos - $formato->quadrinhos;
+                $allformats[$z - 1] ->save();
+        }
+
+        $formato->delete();
+        return redirect()->back();
     }
 }

@@ -16,7 +16,7 @@ class CreateColumnsTable extends Migration
         Schema::create('columns', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('row_id')->references('id')->on('rows');
+            $table->foreignId('row_id')->references('id')->on('rows')->onDelete('cascade');
         });
     }
 

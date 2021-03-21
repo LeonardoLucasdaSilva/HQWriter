@@ -17,7 +17,9 @@ class CreateFormatsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('quadrinhos');
+            $table->TEXT('descricao')->default('');
             $table->foreignId('roteiro_id')->references('id')->on('roteiros');
+            $table->softDeletes();
         });
     }
 

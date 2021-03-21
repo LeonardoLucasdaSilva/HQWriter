@@ -152,10 +152,13 @@
                         </div>
                         <div class="form-group">
                             <h5>Tipo: </h5><br>
-                            <input type="radio" id="marvelway" name="tipo" value="marvelway" required>
-                            <label for="marvelway">Marvel way</label><br>
+                            <p class="d-inline"  title="Roteiro em que o escritor descreve superficialmente
+a história, uma espécie de sinopse"><input type="radio" id="marvelway" name="tipo" value="marvelway" required>
+                            <label for="marvelway">Marvel way</label></p><br>
+                            <p class="d-inline"  title="Roteiro onde o escritor descreve detalhadamente a história,
+informando diálogos e elementos presentes nos quadrinhos.">
                             <input type="radio" id="fullscript" name="tipo" value="fullscript" required>
-                            <label for="fullscript"><i>Full-script</i></label><br>
+                                <label for="fullscript"><i>Full-script</i></label></p>
                         </div>
                         <div class="form-group">
                             <h5>Visibilidade: </h5><br>

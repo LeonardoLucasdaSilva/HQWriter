@@ -1,6 +1,5 @@
 @extends('layouts.navbar2')
 @section('content')
-    <h4 class="m-auto text-center">Formatação - Página {{$numformatos+1}}</h4>
     <!--<form action="" method="POST">
             arroba csrf
             <div class="form-group">
@@ -222,7 +221,9 @@
             }
         </script>
     </head>
+
     <div class="container w-100 mt-3">
+        <h4 class="text-center">Editar formatação - Página {{$editando+1}}</h4>
         <div class="row d-flex justify-content-center">
             <div class="col-2 mt-5" id="colremover" style="height: 640px">
             </div>
@@ -245,13 +246,13 @@
             </div>
         </div>
     </div>
-    <form action="{{route('projetos.novoFormato',$id)}}" method="POST">
+    <form action="{{route('projetos.updateFormato',$formato->id)}}" method="POST">
         @csrf
         <input type="hidden" id="format" name="format" value="">
         <hr class="w-50">
         <div class="row d-flex justify-content-center">
             <div class="col">
-                <textarea class="ml-3 float-right" name="descricao" id="descricao"></textarea>
+                <textarea class="ml-3 float-right" name="descricao" id="descricao" value="{{$formato->descricao}}">{{$formato->descricao}}</textarea>
                 <label class="d-block float-right" for="descricao">Descrição (Opcional)</label>
 
             </div>
@@ -260,5 +261,14 @@
             </div>
         </div>
     </form>
+
+    @for($x=0;$x<count($formato->rows);$x++)
+        <script>adicionarLinha();
+        </script>
+        @for($y=0;$y<(count($formato->rows[$x]->columns)-1);$y++)
+            <script>adicionarQuadrinho({{$x}});
+            </script>
+        @endfor
+    @endfor
 
 @endsection
