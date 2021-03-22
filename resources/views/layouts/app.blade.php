@@ -28,7 +28,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-gray">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="https://cdn.discordapp.com/attachments/320612371334823938/821150652503162919/hqWriter.png" width="100" height="50" class="d-inline-block align-top" alt="">
+                    <div style="width:100px;height:50px" class="d-inline-block align-top" alt=""></div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
