@@ -34,8 +34,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <a href="http://localhost/tcc/public/"><img src="{{asset('storage/hqWriter.png')}}" width="100" height="60" class="d-inline-block align-top" alt=""></a>
-
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <img src="https://cdn.discordapp.com/attachments/320612371334823938/821150652503162919/hqWriter.png" width="100" height="50" class="d-inline-block align-top" alt="">
+                    </a>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

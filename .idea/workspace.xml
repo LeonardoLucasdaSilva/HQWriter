@@ -3,17 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="44d82f88-27e1-43f8-ac19-a78fc8b673c3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjetosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Painel/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Painel/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Projetos/editpagina.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Projetos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Projetos/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ajuda.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ajuda.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/baixar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/baixar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/baixareco.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/baixareco.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/gerenciarusuarios.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/gerenciarusuarios.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/pagination/tailwind.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/pagination/tailwind.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/visualizar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/visualizar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/navbaradmin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/navbaradmin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/registrar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/registrar.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +237,7 @@
       <workItem from="1616192946385" duration="5041000" />
       <workItem from="1616260649603" duration="8295000" />
       <workItem from="1616280418970" duration="17555000" />
-      <workItem from="1616346368405" duration="23783000" />
+      <workItem from="1616346368405" duration="24124000" />
     </task>
     <servers />
   </component>
