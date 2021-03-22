@@ -49,6 +49,7 @@ Route::middleware(['auth','ativo'])->group(function() {
     Route::get('/formatos/select/{roteiro}','ProjetosController@selectFormato')->name('projetos.selectformato');
     Route::post('/projetos/update/{formato}','ProjetosController@updateFormato')->name('projetos.updateFormato');
     Route::get('/formatos/excluir/{formato}','ProjetosController@excluirFormato')->name('projetos.excluirformato');
+    Route::get('/projetos/abrir/{roteiro}','ProjetosController@abrir')->name('projetos.abrirRoteiro');
 });
 
 Route::middleware(['auth', 'admin','ativo'])->group(function() {

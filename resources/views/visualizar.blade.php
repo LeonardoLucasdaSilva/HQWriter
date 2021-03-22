@@ -67,6 +67,7 @@
         <h5 class="text-center mt-5 d-inline">por {{$autor}}</h5>
             <button type="button" class="btn btn-outline-dark float-right mb-3" data-toggle="modal" data-target="#downloads">Fazer download</button>
         <hr>
+        @if($roteiro->is_marvelway==false)
         @for($x=0; $x<count($paginas);$x++)
             <h2 class="subtitulo mt-4">Pagina {{$teste}} / Quadrinho {{$show+1}}</h2>
             @if($paginas[$x]->plano!="")
@@ -190,6 +191,13 @@
         <hr>
         @endfor
     </div>
+    @else
+        @for($n=0;$n<count($paginas);$n++)
+            <h2 class="subtitulo mt-4">Pagina {{$n+1}}</h2>
+            <h5 class="subtitulo2"><i>Script</i></h5>
+            <div class="conteudo mb-2">{!! html_entity_decode($paginas[$n]->conteudo) !!}</div>
+        @endfor
+    @endif
     </div>
     <div class="modal fade" id="downloads" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -201,8 +209,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    @if($roteiro->is_marvelway==false)
                     <a href="{{route('projetos.baixarEco',$roteiro)}}"><button class="btn btn-secondary">Econômico</button></a>
+                    @endif
                     <a href="{{route('projetos.baixar',$roteiro)}}"><button class="btn btn-secondary">Normal</button></a>
+
                 </div>
             </div>
         </div>

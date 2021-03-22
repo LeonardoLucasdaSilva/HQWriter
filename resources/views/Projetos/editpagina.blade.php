@@ -94,30 +94,34 @@
                                 <div class="col-2">
                                     <div class="w-75">
                                         <h5>Quadrinho {{$editando}} / Página {{$currentPage}}</h5>
-                                    <div class="container w-100 bordas" style="height: 300px;">
-                                        @for($y=0;$y<count($formato->rows);$y++)
-                                            <div class="row"
-                                                 style="height:{{$formato->rows[$y]->altura}}; margin-top: 2.5px;">
-                                                @for($z=0;$z<count($formato->rows[$y]->columns);$z++)
-                                                    <div class="col bordas"
-                                                         style="margin-left: 2px;
-@if($z==count($formato->rows[$y]->columns)-1) margin-right: 2px;
+                                        <div class="container w-100 bordas" style="height: 300px;">
+                                            @for($y=0;$y<count($formato->rows);$y++)
+                                                <div class="row"
+                                                     style="height:{{$formato->rows[$y]->altura}}; margin-top: 2.5px;">
+                                                    @for($z=0;$z<count($formato->rows[$y]->columns);$z++)
+                                                        <div class="col bordas"
+                                                             style="margin-left: 2px;
+                                                             @if($z==count($formato->rows[$y]->columns)-1) margin-right: 2px;
 
-                                                         @endif"
-                                                         id={{$idquadrinho}}></div>
-                                                    @php
-                                                        $idquadrinho++;
-                                                    @endphp
-                                                @endfor
+                                                             @endif"
+                                                             id={{$idquadrinho}}></div>
+                                                        @php
+                                                            $idquadrinho++;
+                                                        @endphp
+                                                    @endfor
+                                                </div>
+                                            @endfor
+                                            <div class="row mt-2">
+                                                <button class="btn btn-outline-dark" name="teste"
+                                                        value="editarformatacoes" type="submit">Editar formatações
+                                                </button>
                                             </div>
-                                        @endfor
-                                        <div class="row mt-2"><button class="btn btn-outline-dark" name="teste" value="editarformatacoes" type="submit">Editar formatações</button></div>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                                 <div class="col-8">
                                     @else
-                                        <div>
+                                        <div class="w-100">
                                             @endif
                                             @if(session('statusFala'))
                                                 @if(session('statusFala')=="Limite de cinco falas por quadrinho atingido!" || session('statusFala')=="Limite de cinco legendas por quadrinho atingido!")
@@ -267,23 +271,40 @@
                                 </div>
 
                         </div>
-                        <button name="teste" value="salvar" type="submit"
-                                class="float-right btn btn-outline-success mt-2 d-inline mr-2">Salvar
-                        </button>
                         @if($numpags==$totalquadrinhos)
                             <button type="submit" name="teste" value="concluido"
-                                    class="float-left btn btn-outline-success mt-2 d-inline ml-2">Definir como concluído
+                                    class="float-right btn btn-outline-success mt-2 d-inline mr-1">Definir como
+                                concluído
                             </button>
                         @endif
+                        @if($roteiro->is_marvelway==true)
+                            <button type="submit" name="teste" value="concluido"
+                                    class="float-right btn btn-outline-success mt-2 d-inline mr-1">Definir como
+                                concluído
+                            </button>
+                        @endif
+                        <button name="teste" value="salvar" type="submit"
+                                class="float-right btn btn-outline-success mt-2 d-inline mr-1">Salvar
+                        </button>
                         <button type="submit" name="teste" value="novapagina"
                                 class="float-right btn btn-outline-secondary mt-2 d-inline mr-1 ml-1">Novo quadrinho
                         </button>
+                        <div class="d-inline container w-50 float-left" style="margin-left: 16%">
+                            <h5 class="d-inline mr-1 mb-3">Quadrinhos</h5>
+                            <div
+                                style="height:60px;width:100%; overflow-x: auto;  white-space: nowrap; border: 1px solid gray; border-radius: 5px">
+                                @for($x=0;$x<count($allpaginas);$x++)
+                                    <span><button type="submit"
+                                                  class="btn btn-outline-secondary d-inline ml-1 mt-2"
+                                                  name="teste" id="{{$x+30}}" value="{{$x+1}}">{{$x+1}}</button></span>
+                                @endfor
+                            </div>
+                        </div>
                     </form>
-                    <form class="d-inline" action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
+                    <form action="{{route('projetos.apagarPagina',$pag->id)}}" method="POST">
                         @CSRF
                         @method('DELETE')
-                        <button type="submit" class="float-right btn btn-outline-danger mt-2 d-inline mr-1">Apagar
-                            quadrinho
+                        <button type="submit" class="float-right btn btn-outline-danger mt-2">Apagar quadrinho
                         </button>
                     </form>
                     <div class="w-100 text-center d-inline float-right">
@@ -296,7 +317,10 @@
 <script>
     var vermelho = document.getElementById('{{$editando}}');
     vermelho.style.backgroundColor = 'red';
-
+    var teste = document.getElementById('{{$pagina->firstItem()+29}}');
+    teste.classList.remove('btn-outline-secondary');
+    teste.classList.add('btn-secondary');
+    console.log(teste);
 </script>
 </html>
 @endsection

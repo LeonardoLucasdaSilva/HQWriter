@@ -118,6 +118,7 @@
                     <td class="w-25">{{$concluido->updated_at->format('d/m/Y')}}</td>
                     <td class="w-25">{{$concluido->numpag}}</td>
                     <td class="w-25"><a class="mr-auto" href="{{route('projetos.visualizarRoteiro',$concluido)}}"><button class="btn btn-secondary">Visualizar</button></a>
+                        <a class="mr-auto" href="{{route('projetos.abrirRoteiro',$concluido)}}"><button class="btn btn-secondary">Reabrir</button></a></td>
                 </tr>
             @endforeach
             </tbody>

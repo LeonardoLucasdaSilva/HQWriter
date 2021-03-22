@@ -18,21 +18,53 @@
         </h3>
         <hr>
         <div>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        </div>
-        <h3>
-            Como escrever um roteiro?
-        </h3>
-        <hr>
-        <div>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        </div>
-        <h3>
-            FAQ
-        </h3>
-        <hr>
-        <div>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+            <h4>
+                Como escrever um roteiro?
+            </h4>
+            <p>
+                Para escrever um roteiro, vá a "Meus projetos"->"Novo Projeto", e informe as definições do seu roteiro!
+                <br>
+                Como início da sua história, você deve selecionar a formatação inicial do seu roteiro.
+            </p>
+            <h4>
+                Formatações
+            </h4>
+            <p>
+                Na tela de formatação, você pode controlar a quantidade de quadrinhos de sua página, usando dos botões
+                adicionar linha, e adicionar quadrinhos correspondentes.
+                <br>
+                Além disso, você pode adicionar uma breve descrição à sua página, caso queira.
+                <br>
+                Para editá-las, você precisa ir a "Meus projetos"->"Editar"->"Editar formatações".
+                <br>
+                Após isso, basta configurar como desejar.
+                <br>
+                Para editá-lo, basta ir a "Meus projetos"->"Editar".
+                <br>
+                Dentro da tela de edição, é possível que você possa alterar as informações de cada quadrinho, criar
+                novos
+                quadrinhos e editar as formatações.
+            </p>
+            <h4>
+                Como adicionar novos quadrinhos?
+            </h4>
+            <p>
+                Para adicionar um novo quadrinho, você deve ir a "Meus projetos"->"Editar"->"Novo quadrinho".
+                <br>
+                O sistema direcionará você ao seu novo quadro, e você poderá editá-lo ali mesmo.
+                <br>
+                Aviso: Quando você atingir a quantidade de quadrinhos das suas formatações, você poderá concluí-lo.
+            </p>
+            <h4>
+                Visualizando roteiros
+            </h4>
+            <p>
+                Para visualizar os seus roteiros,"Meus projetos", e na aba "Projetos concluídos" -> Visualizar
+                <br>
+                Para visualizar projetos públicos, entre em "Painel de Roteiros", e selecione o gênero o qual você deseja ver
+                <br>
+                Dentro da visualização dos projetos, você também pode imprimí-los, clicando em "Fazer download", e selecionando a opção desejada.
+            </p>
         </div>
     </div>
 @endsection

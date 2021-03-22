@@ -38,17 +38,17 @@
         }
 
     </style>
-    <div class="container">
+    <div class="container w-50">
         <hr>
         <div class="row">
             <a class="text-dark text-decoration-none w-10" href="{{route('painel.index')}}">
-                <div class="col mr-1 ml-1 generocontainer">
+                <div class="col mr-1 ml-1 generocontainer" style="padding-left: 45px;padding-right: 45px">
                     Todos
                 </div>
             </a>
             @foreach($generos as $genero)
                 <a class="text-dark text-decoration-none w-10" href="{{route('visualizarGenero',$genero->id)}}">
-                    <div class="col ml-1 mr-1 generocontainer">
+                    <div class="col ml-1 mr-1 generocontainer" style="padding-left: 45px;padding-right: 45px">
                         {{$genero->nome}}
                     </div>
                 </a>

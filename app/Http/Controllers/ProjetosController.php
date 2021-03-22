@@ -22,8 +22,8 @@ class ProjetosController extends Controller
 {
     public function index()
     {
-        $concluidos = Roteiro::where('user_id', Auth::user()->id)->where('is_concluido', true)->with('paginas')->get();
-        $abertos = Roteiro::where('user_id', Auth::user()->id)->where('is_concluido', false)->with('paginas')->get();
+        $concluidos = Roteiro::where('user_id', Auth::user()->id)->where('is_concluido', true)->orderby('created_at', 'desc')->with('paginas')->get();
+        $abertos = Roteiro::where('user_id', Auth::user()->id)->where('is_concluido', false)->orderby('created_at', 'desc')->with('paginas')->get();
         foreach ($abertos as $aberto) {
             $aberto->numpag = $aberto->paginas->count();
         }
@@ -158,14 +158,12 @@ class ProjetosController extends Controller
 
     public function editPagina($id)
     {
-
-        $roteiros = Roteiro::where('id', $id)->get();
-        $roteiro = $roteiros[0];
+        $roteiro = Roteiro::where('id', $id)->first();
+        $allpaginas = Pagina::where('roteiro_id', $id)->orderby('id')->get();
         $pagina = $roteiro->paginas()->orderBy('id')->paginate(1);
         $pag = $roteiro->paginas()->orderBy('id');
         $personagens = $roteiro->chars()->get();
         $numpags = $roteiro->paginas()->count();
-
         $formatos = $roteiro->formats()->get();
         $numformatos = count($formatos);
         $idquadrinho = 1;
@@ -174,8 +172,10 @@ class ProjetosController extends Controller
         } else {
             $totalquadrinhos = 0;
         }
-        if ($roteiro->formats()->count() == 0 && $numpags == 1 || $totalquadrinhos < $numpags) {
-            return view('createFormato', compact('id', 'numformatos'));
+        if($roteiro->is_marvelway==false) {
+            if ($roteiro->formats()->count() == 0 && $numpags == 1 || $totalquadrinhos < $numpags) {
+                return view('createFormato', compact('id', 'numformatos'));
+            }
         }
         $formato = Format::where('roteiro_id', $roteiro->id)->where('quadrinhos', '>=', $pagina->currentPage())->first();
         $f = Format::where('roteiro_id', $roteiro->id)->where('quadrinhos', '<', $pagina->currentPage())->get();
@@ -193,7 +193,7 @@ class ProjetosController extends Controller
             $f = $f->quadrinhos;
         }
         $editando = $pagina->currentPage() - $f;
-        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'totalquadrinhos', 'numpags', 'formato', 'idquadrinho', 'editando', 'currentPage'));
+        return view('Projetos.editpagina', compact('pagina', 'roteiro', 'personagens', 'totalquadrinhos', 'numpags', 'formato', 'idquadrinho', 'editando', 'currentPage', 'allpaginas'));
     }
 
     public function updatePagina(Request $request, $id)
@@ -318,16 +318,18 @@ class ProjetosController extends Controller
             }
         }
         $pagina->save();
-        switch ($request->teste) {
-            case "salvar":
-                return redirect()->back();
-            case "novapagina":
-                return redirect()->route('projetos.novaPagina', $pagina->roteiro->id);
-            case "concluido":
-                return redirect()->route('projetos.concluir', $pagina->roteiro->id);
-            case "editarformatacoes":
-                return redirect()->route('projetos.editFormatos', $pagina->roteiro->id);
-        }
+            switch ($request->teste) {
+                case "salvar":
+                    return redirect()->back();
+                case "novapagina":
+                    return redirect()->route('projetos.novaPagina', $pagina->roteiro->id);
+                case "concluido":
+                    return redirect()->route('projetos.concluir', $pagina->roteiro->id);
+                case "editarformatacoes":
+                    return redirect()->route('projetos.editFormatos', $pagina->roteiro->id);
+                default:
+                    return redirect('projetos/editar/' . $pagina->roteiro->id . '?page=' . $request->teste);
+            }
 
         return redirect()->back()->with('salvas', 'Alterações salvas com sucesso!');
     }
@@ -375,7 +377,8 @@ class ProjetosController extends Controller
         if ($numpags > 1) {
             $pagina->delete();
         }
-        return redirect('projetos/editar/' . $idroteiro . '?page=1');
+        $numpags = $pagina->roteiro->paginas()->count();
+        return redirect('projetos/editar/' . $idroteiro . '?page=' .$numpags);
     }
 
     public function visualizarRoteiro($roteiro)
@@ -402,36 +405,38 @@ class ProjetosController extends Controller
     public function novoFormato(Request $request, $roteiro)
     {
         $roteiro = Roteiro::where('id', $roteiro)->first();
-        $formato = new Format();
-        $formato->roteiro_id = $roteiro->id;
-        if ($request->descricao) {
-            $formato->descricao = $request->descricao;
-        } else {
-            $formato->descricao = "";
-        }
-        $formato->quadrinhos = 0;
-        $formato->save();
-        $linhas = explode(',', $request->format);
-        for ($x = 1; $x < count($linhas); $x++) {
-            $linha = new Row();
-            $linha->format_id = $formato->id;
-            $altura = (100 / (count($linhas) - 1)) - 1;
-            $linha->altura = $altura . '%';
-            $linha->save();
-            for ($y = 0; $y < $linhas[$x]; $y++) {
-                $coluna = new Column();
-                $coluna->row_id = $linha->id;
-                $coluna->save();
-                $formato->quadrinhos++;
+        if($roteiro->is_marvelway==false) {
+            $formato = new Format();
+            $formato->roteiro_id = $roteiro->id;
+            if ($request->descricao) {
+                $formato->descricao = $request->descricao;
+            } else {
+                $formato->descricao = "";
             }
-        }
-        if (count($roteiro->formats()->get()) > 1) {
-            $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
-            $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
-        }
+            $formato->quadrinhos = 0;
+            $formato->save();
+            $linhas = explode(',', $request->format);
+            for ($x = 1; $x < count($linhas); $x++) {
+                $linha = new Row();
+                $linha->format_id = $formato->id;
+                $altura = (100 / (count($linhas) - 1)) - 1;
+                $linha->altura = $altura . '%';
+                $linha->save();
+                for ($y = 0; $y < $linhas[$x]; $y++) {
+                    $coluna = new Column();
+                    $coluna->row_id = $linha->id;
+                    $coluna->save();
+                    $formato->quadrinhos++;
+                }
+            }
+            if (count($roteiro->formats()->get()) > 1) {
+                $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
+                $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
+            }
 
 
-        $formato->save();
+            $formato->save();
+        }
         return redirect()->back();
 
     }
@@ -462,17 +467,34 @@ class ProjetosController extends Controller
     {
 
         $roteiro = Roteiro::where('id', $id)->first();
-        $totalquadrinhos = $roteiro->formats()->get();
-        $totalquadrinhos = $totalquadrinhos[count($totalquadrinhos) - 1];
-        if (count($roteiro->paginas) == $totalquadrinhos->quadrinhos) {
-            $roteiro->is_concluido = 1;
+        if($roteiro->is_marvelway==false) {
+            $totalquadrinhos = $roteiro->formats()->get();
+            $totalquadrinhos = $totalquadrinhos[count($totalquadrinhos) - 1];
+            if (count($roteiro->paginas) == $totalquadrinhos->quadrinhos) {
+                $roteiro->is_concluido = 1;
+                $roteiro->save();
+                return redirect()->action(
+                    [ProjetosController::class, 'index'],
+                );
+            } else {
+                return redirect()->back()->with('concluido', 'Falha ao concluir roteiro, quadrinhos e formatos não conferem');
+            }
+        }
+        else{
+            $roteiro->is_concluido =1;
             $roteiro->save();
             return redirect()->action(
                 [ProjetosController::class, 'index'],
             );
-        } else {
-            return redirect()->back()->with('concluido', 'Falha ao concluir roteiro, quadrinhos e formatos não conferem');
         }
+    }
+
+    public function abrir($id)
+    {
+        $roteiro = Roteiro::where('id', $id)->first();
+        $roteiro->is_concluido = false;
+        $roteiro->save();
+        return redirect()->back();
     }
 
     public function baixar(Roteiro $roteiro)
@@ -487,8 +509,15 @@ class ProjetosController extends Controller
         $teste = 1;
         $a = 0;
         $show = 0;
-        $pdf = \PDF::loadView('baixar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont', 'idquadrinho', 'paginaid', 'teste', 'a', 'show'))->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->stream('roteiro.pdf');
+        if($roteiro->is_marvelway==false) {
+            $pdf = \PDF::loadView('baixar', compact('paginas', 'roteiro', 'autor', 'formatos', 'cont', 'idquadrinho', 'paginaid', 'teste', 'a', 'show'))->setOptions(['defaultFont' => 'sans-serif']);
+            return $pdf->stream('roteiro.pdf');
+        }
+        else{
+            $pdf = \PDF::loadView('baixarmarvel', compact('paginas', 'roteiro', 'autor'))->setOptions(['defaultFont' => 'sans-serif']);
+            return $pdf->stream('roteiro.pdf');
+        }
+
     }
 
     public function baixarEco(Roteiro $roteiro)
@@ -527,9 +556,9 @@ class ProjetosController extends Controller
 
     public function updateFormato(Request $request, $formato)
     {
-        $formato = Format::where('id',$formato)->first();
+        $formato = Format::where('id', $formato)->first();
         $numquadros = $formato->quadrinhos;
-        for($x=0;$x<count($formato->rows);$x++){
+        for ($x = 0; $x < count($formato->rows); $x++) {
             $formato->rows[$x]->delete();
         }
         $roteiro = Roteiro::where('id', $formato->roteiro_id)->first();
@@ -555,105 +584,114 @@ class ProjetosController extends Controller
                 $formato->quadrinhos++;
             }
         }
-        if (count($roteiro->formats()->get()) > 1) {
-            $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
-            $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
-        }
 
-        $todos = Format::where('roteiro_id',$formato->roteiro_id)->orderby('id')->get();
-        for($x=0;$x<count($todos);$x++){
-            if($todos[$x]->id == $formato->id){
+        $todos = Format::where('roteiro_id', $formato->roteiro_id)->orderby('id')->get();
+        for ($x = 0; $x < count($todos); $x++) {
+            if ($todos[$x]->id == $formato->id) {
                 $numid = $x;
             }
         }
 
-        if($numid!=0) {
-            $formato->quadrinhos += $todos[$numid-1]->quadrinhos;
+        if (count($roteiro->formats()->get()) > 1 && $numid != 0) {
+            $formatobase = Format::where('roteiro_id', $roteiro->id)->get();
+            $formato->quadrinhos += $formatobase[count($formatobase) - 2]->quadrinhos;
         }
-        $numquadros-=$formato->quadrinhos;
-        $formatosseguintes = Format::where('id', '>',$formato->id)->orderby('id')->get();
-        for($z=0;$z<count($formatosseguintes);$z++){
-            $formatosseguintes[$z]->quadrinhos-=$numquadros;
+
+        if ($numid != 0) {
+            $formato->quadrinhos += $todos[$numid - 1]->quadrinhos;
+            $numquadros -= $formato->quadrinhos;
+        } else {
+            $formatosseguintes = Format::where('id', '>', $formato->id)->orderby('id')->get();
+            for ($z = 0; $z < count($formatosseguintes); $z++) {
+                $formatosseguintes[$z]->quadrinhos += $formato->quadrinhos;
+                $formatosseguintes[$z]->save();
+            }
+
+        }
+        $formatosseguintes = Format::where('id', '>', $formato->id)->orderby('id')->get();
+        for ($z = 0; $z < count($formatosseguintes); $z++) {
+            $formatosseguintes[$z]->quadrinhos -= $numquadros;
             $formatosseguintes[$z]->save();
         }
 
         $formato->save();
 
+        return redirect()->action(
+            [ProjetosController::class, 'editFormatos'], ['roteiro' => $formato->roteiro_id]
+        );
+        /* $formatoantigo = Format::where('id',$formato)->first();
+         $numlinhas = 0;
+         $linhas = explode(',', $request->format);
+         if ($request->descricao) {
+             $formatoantigo->descricao = $request->descricao;
+         } else {
+             $formatoantigo->descricao = "";
+         }
+         $formatoantigo->quadrinhos = 0;
+         $formatoantigo->save();
 
-        return redirect()->back();
-       /* $formatoantigo = Format::where('id',$formato)->first();
-        $numlinhas = 0;
-        $linhas = explode(',', $request->format);
-        if ($request->descricao) {
-            $formatoantigo->descricao = $request->descricao;
-        } else {
-            $formatoantigo->descricao = "";
-        }
-        $formatoantigo->quadrinhos = 0;
-        $formatoantigo->save();
+         for ($x = 1; $x < count($linhas); $x++) {
+             if ($linhas[$x] > 0) {
+                 $numlinhas++;
+             }
+         }
+         if (count($formatoantigo->rows) > $numlinhas) {
+             do {
+                 $formatoantigo->rows[(count($formatoantigo->rows) - 1)]->delete();
+                 $formatoantigo->save();
+                 $teste = Row::where('format_id',$formatoantigo->id)->get();
+             } while (count($teste) > $numlinhas);
+         } else {
+             do {
 
-        for ($x = 1; $x < count($linhas); $x++) {
-            if ($linhas[$x] > 0) {
-                $numlinhas++;
-            }
-        }
-        if (count($formatoantigo->rows) > $numlinhas) {
-            do {
-                $formatoantigo->rows[(count($formatoantigo->rows) - 1)]->delete();
-                $formatoantigo->save();
-                $teste = Row::where('format_id',$formatoantigo->id)->get();
-            } while (count($teste) > $numlinhas);
-        } else {
-            do {
+                 $linha = new Row();
+                 $linha->format_id = $formatoantigo->id;
+                 $altura = (100 / (count($linhas) - 1)) - 1;
+                 $linha->altura = $altura . '%';
+                 $linha->save();
+                 $formatoantigo->save();
+                 $teste = Row::where('format_id',$formatoantigo->id)->get();
+             } while (count($teste) < $numlinhas);
+         }
 
-                $linha = new Row();
-                $linha->format_id = $formatoantigo->id;
-                $altura = (100 / (count($linhas) - 1)) - 1;
-                $linha->altura = $altura . '%';
-                $linha->save();
-                $formatoantigo->save();
-                $teste = Row::where('format_id',$formatoantigo->id)->get();
-            } while (count($teste) < $numlinhas);
-        }
-
-        for ($y = 0; $y < count($formatoantigo->rows); $y++) {
-            if (count($formatoantigo->rows[$y]->columns) < $linhas[$y+1]) {
-                do {
-                    $coluna = new Column();
-                    $coluna->row_id = $formatoantigo->rows[$y]->id;
-                    $coluna->save();
-                    $formatoantigo->save();
-                    $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
-                } while (count($teste) < $linhas[$y+1]);
-            }
-            else{
-                do {
-                    if(count($formatoantigo->rows[$y]->columns)!=0) {
-                        $formatoantigo->rows[$y]->columns[(count($formatoantigo->rows[$y]->columns) - 1)]->delete();
-                        $formatoantigo->save();
-                        $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
-                    }
-                } while (count($teste) > $linhas[$y+1]);
-            }
-        }
-        $formatoantigo->save();*/
-        return redirect()->back();
+         for ($y = 0; $y < count($formatoantigo->rows); $y++) {
+             if (count($formatoantigo->rows[$y]->columns) < $linhas[$y+1]) {
+                 do {
+                     $coluna = new Column();
+                     $coluna->row_id = $formatoantigo->rows[$y]->id;
+                     $coluna->save();
+                     $formatoantigo->save();
+                     $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
+                 } while (count($teste) < $linhas[$y+1]);
+             }
+             else{
+                 do {
+                     if(count($formatoantigo->rows[$y]->columns)!=0) {
+                         $formatoantigo->rows[$y]->columns[(count($formatoantigo->rows[$y]->columns) - 1)]->delete();
+                         $formatoantigo->save();
+                         $teste = Column::where('row_id',$formatoantigo->rows[$y]->id)->get();
+                     }
+                 } while (count($teste) > $linhas[$y+1]);
+             }
+         }
+         $formatoantigo->save();*/
     }
+
     public function excluirFormato($formato)
     {
-        $formato = Format::where('id',$formato)->first();
+        $formato = Format::where('id', $formato)->first();
 
-        $allformats = Format::where('id', '>',$formato->id)->orderby('id')->get();
+        $allformats = Format::where('id', '>', $formato->id)->orderby('id')->get();
 
-        $todos = Format::where('roteiro_id',$formato->roteiro_id)->orderby('id')->get();
-        for($x=0;$x<count($todos);$x++){
-            if($todos[$x]->id == $formato->id){
+        $todos = Format::where('roteiro_id', $formato->roteiro_id)->orderby('id')->get();
+        for ($x = 0; $x < count($todos); $x++) {
+            if ($todos[$x]->id == $formato->id) {
                 $numid = $x;
             }
         }
-        for($z=count($allformats);$z>$numid;$z--){
-                $allformats[$z - 1]->quadrinhos = $allformats[$z - 1]->quadrinhos - $formato->quadrinhos;
-                $allformats[$z - 1] ->save();
+        for ($z = count($allformats); $z > $numid; $z--) {
+            $allformats[$z - 1]->quadrinhos = $allformats[$z - 1]->quadrinhos - $formato->quadrinhos;
+            $allformats[$z - 1]->save();
         }
 
         $formato->delete();

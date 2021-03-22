@@ -86,6 +86,10 @@
                         </div>
                     @endfor
                 </div>
+                @if($formatos[$teste-1]->descricao!="")
+                    <h5 class="subtitulo2">Descrição</h5>
+                    <div class="conteudo mb-2">{{$formatos[$teste-1]->descricao}}</div>
+                @endif
                 <div style="page-break-after: always;"></div>
             @endif
             <h2 class="subtitulo mt-4">Página {{$teste}} / Quadrinho {{$show+1}}</h2>
@@ -122,9 +126,12 @@
                                         @endfor
                                     </div>
                                 @endfor
+                                    @if($formatos[$teste-1]->descricao!="")
+                                        <h5 class="subtitulo2">Descrição</h5>
+                                        <div class="conteudo mb-2">{{$formatos[$teste-1]->descricao}}</div>
+                                    @endif
                                 @endif
                             </div>
-                            <hr>
                         @endif
                     @else
                         @php
@@ -149,9 +156,12 @@
                                             @endfor
                                         </div>
                                     @endfor
+                                    @if($formatos[$teste-1]->descricao!="")
+                                        <h5 class="subtitulo2">Descrição</h5>
+                                        <div class="conteudo mb-2">{{$formatos[$teste-1]->descricao}}</div>
+                                        @endif
                                     @endif
                                 </div>
-                                <hr>
                             @endif
                         @endif
             </div>
