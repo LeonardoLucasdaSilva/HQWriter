@@ -118,7 +118,7 @@
                 @endif
 
             </div>
-            <h5 class="subtitulo2"><i>Script</i></h5>
+            <h5 class="subtitulo2 mr-2"><i>Script</i></h5>
             <tr>
                 <th class="w-25" scope="row">
                     @if($paginas[$x]->conteudo=="")
@@ -130,24 +130,26 @@
             </tr>
     </div>
 
-    @if($paginas[$x]->is_flashback||$paginas[$x]->is_subjetivo||$paginas[$x]->is_impacto||$paginas[$x]->is_off)
-        <h5 class="subtitulo2 mt-4">Detalhes</h5>
-    @endif
+
 
     <div class="container">
-        <div class="row d-block justify-content-center">
+        @if($paginas[$x]->is_flashback||$paginas[$x]->is_subjetivo||$paginas[$x]->is_impacto||$paginas[$x]->is_off)
+            <h5 class="subtitulo2 mt-4">Detalhes</h5>
+        @endif
+        <div class="row d-block justify-content-center pl-2">
             @if($paginas[$x]->is_flashback)
-                <div class="tipo pl-1 pr-1 col">Flashback</div>
+                <div class="tipo pl-1 pr-1 col ml-1">Flashback</div>
             @endif
             @if($paginas[$x]->is_subjetivo)
-                <div class="tipo pl-1 pr-1 col">Subjetivo</div>
+                <div class="tipo pl-1 pr-1 col ml-1">Subjetivo</div>
             @endif
             @if($paginas[$x]->is_impacto)
-                <div class="tipo pl-1 pr-1 col">Impacto</div>
+                <div class="tipo pl-1 pr-1 col ml-1">Impacto</div>
             @endif
             @if($paginas[$x]->is_off)
-                <div class="tipo pl-1 pr-1 col">Off</div>
+                <div class="tipo pl-1 pr-1 col ml-1">Off</div>
             @endif
+        </div>
             @if($paginas[$x]->anotacoes)
                 <h5 class="subtitulo2 mt-3 mb-2">Notas</h5>
                 <tr>
@@ -156,7 +158,7 @@
                     </th>
                 </tr>
             @endif
-        </div>
+
 
 
         @php
