@@ -26,10 +26,10 @@
                 <br>
                 Em caso de um roteiro <i>full script</i>, como início da sua história, você deve selecionar a formatação inicial do seu roteiro.
                 <br>
-                Clique em editar roteiro, e comece a escrever!
+                Clique em "editar", e comece a escrever!
             </p>
             <h4>
-                Formatações (Apenas para <i>full script</i>)
+                Formatações (Apenas para <i>full script </i>)
             </h4>
             <p>
                 Na tela de formatação, você pode controlar a quantidade de quadrinhos de sua página, usando dos botões
