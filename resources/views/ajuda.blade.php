@@ -24,10 +24,12 @@
             <p>
                 Para escrever um roteiro, vá a "Meus projetos"->"Novo Projeto", e informe as definições do seu roteiro!
                 <br>
-                Como início da sua história, você deve selecionar a formatação inicial do seu roteiro.
+                Em caso de um roteiro <i>full script</i>, como início da sua história, você deve selecionar a formatação inicial do seu roteiro.
+                <br>
+                Clique em editar roteiro, e comece a escrever!
             </p>
             <h4>
-                Formatações
+                Formatações (Apenas para <i>full script</i>)
             </h4>
             <p>
                 Na tela de formatação, você pode controlar a quantidade de quadrinhos de sua página, usando dos botões
