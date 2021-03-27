@@ -307,16 +307,15 @@
                         <button type="submit" class="float-right btn btn-outline-danger mt-2">Apagar quadrinho
                         </button>
                     </form>
-                    <div class="w-100 text-center d-inline float-right">
-                        {{$pagina->links()}}
-                    </div>
                 @endforeach
             </div>
 
 </body>
 <script>
+    @if($roteiro->is_marvelway==false)
     var vermelho = document.getElementById('{{$editando}}');
     vermelho.style.backgroundColor = 'red';
+    @endif
     var teste = document.getElementById('{{$pagina->firstItem()+29}}');
     teste.classList.remove('btn-outline-secondary');
     teste.classList.add('btn-secondary');

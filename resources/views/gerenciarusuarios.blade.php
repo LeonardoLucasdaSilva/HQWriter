@@ -79,7 +79,11 @@
                         <td class="w-25">Não</td>
                     @endif
                     <td class="w-25">
-                        @if($ativo->id!=1)
+                        @if($ativo->id==1)
+                            <p>ADMIN</p>
+                        @elseif($ativo->id==Auth::user()->id)
+                            <p>VOCÊ</p>
+                        @else
                             <a class="d-inline" href="{{route('editarusuario',$ativo->id)}}">
                                 <button type="button" class=" justify-content-center btn btn-outline-secondary">
                                     Editar
@@ -93,8 +97,6 @@
                                     Inativar
                                 </button>
                             </form>
-                        @else
-                            <p>ADMIN</p>
                         @endif
                     </td>
                 </tr>
