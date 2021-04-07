@@ -118,7 +118,13 @@
                 @endif
 
             </div>
-            <h5 class="subtitulo2 mr-2"><i>Script</i></h5>
+                <h5 class="subtitulo2 mr-2">Detalhes da pagina</h5>
+                <tr>
+                    <th class="w-25 mt-3" scope="row">
+                        <div class="notas">{{$formatos[$cont]->descricao}}</div>
+                    </th>
+                </tr>
+            <h5 class="subtitulo2 mr-2 mt-2"><i>Script</i></h5>
             <tr>
                 <th class="w-25" scope="row">
                     @if($paginas[$x]->conteudo=="")
