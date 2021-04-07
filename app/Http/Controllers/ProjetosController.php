@@ -598,7 +598,6 @@ class ProjetosController extends Controller
         }
 
         if ($numid != 0) {
-            $formato->quadrinhos += $todos[$numid - 1]->quadrinhos;
             $numquadros -= $formato->quadrinhos;
         } else {
             $formatosseguintes = Format::where('id', '>', $formato->id)->orderby('id')->get();
